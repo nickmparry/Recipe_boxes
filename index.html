@@ -68,7 +68,7 @@ a{color:inherit}
 @media(min-width:900px){
   .side{position:sticky;top:10px;max-height:calc(100vh - 28px);overflow:auto}
   .side > summary{display:none}
-  .side:not([open]) > .sidebody{display:block}
+  .side:not([open]) > .sidebody{display:block !important;content-visibility:visible !important}
 }
 .sidegroup{margin:10px 0 0}
 .sidegroup > summary{list-style:none;cursor:pointer;color:#F5B301;font-family:"Bricolage Grotesque",sans-serif;
@@ -95,6 +95,24 @@ a{color:inherit}
 .tile .body{padding:8px 10px 10px}
 .tile h3{font-family:"Bricolage Grotesque",sans-serif;font-size:14.5px;line-height:1.12;margin:0 0 6px;letter-spacing:-.015em}
 .chip{background:var(--cream);border:2px solid var(--ink);border-radius:999px;padding:2px 7px;font-size:10.5px;font-weight:800;white-space:nowrap}
+
+/* ---------- favourites ---------- */
+.tilewrap{position:relative}
+.fav{
+  position:absolute;top:7px;right:7px;width:30px;height:30px;padding:0;line-height:1;
+  border-radius:999px;border:2px solid var(--ink);background:var(--paper);color:#8C7A62;
+  font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;
+  display:grid;place-items:center;box-shadow:2px 2px 0 var(--ink);
+}
+.fav:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.fav[aria-pressed="true"]{background:#F5B301;color:var(--ink)}
+.fav.big{
+  position:static;width:auto;height:auto;display:inline-flex;align-items:center;gap:6px;
+  padding:9px 14px;font-size:14px;box-shadow:3px 3px 0 var(--ink);background:var(--cream);color:var(--ink);
+}
+.fav.big[aria-pressed="true"]{background:#F5B301}
+.cat.fav-cat{color:#F5B301}
+.favhint{margin:0 0 4px;color:#9B85A8;font-size:13.5px;max-width:46ch}
 
 /* ---------- card ---------- */
 .card{background:var(--paper);border-radius:26px;overflow:hidden;border:3px solid var(--ink)}
@@ -182,7 +200,7 @@ body.show-sheet .card{display:none}
   @page{size:A4;margin:12mm}
   body{background:#fff;font-size:10.5pt;padding:0}
   .wrap{padding:0;max-width:none}
-  .bar,.card,.backlink,.btn,.masthead,.grid,.cat,.side{display:none !important}
+  .bar,.card,.backlink,.btn,.masthead,.grid,.cat,.side,.fav,.favhint{display:none !important}
   .sheet{display:block !important;border:0;padding:0;border-radius:0}
   .sheet-cols{grid-template-columns:34% 1fr;gap:10mm}
   .sheet-list,.sheet-steps{font-size:9.5pt}
@@ -883,7 +901,7 @@ const RECIPES = [
   source:{ name:"Minimalist Baker", url:"https://minimalistbaker.com/curried-potato-lentil-soup-1-pot/", note:"Adapted from Dana Shultz. Metric conversions are approximate." }
 },
 {
-  id:"portobello-steaks-avocado-chimichurri", category:"Dinners", theme:"herb", scene:"skillet", icon:"i-mushroom",
+  id:"portobello-steaks-avocado-chimichurri", category:"Dinners", theme:"chilli", scene:"skillet", icon:"i-mushroom",
   title:"Portobello Steaks", title2:"& Avocado Chimichurri",
   blurb:"Marinated portobellos hit hard in a pan, under a pile of parsley and avocado.",
   kicker:"Balsamic, cumin and smoked paprika go into the mushrooms for ten minutes, which is all they need. The chimichurri is mostly parsley, sharp with lemon, and the avocado folded through it makes it a sauce rather than a dressing.",
@@ -1516,7 +1534,7 @@ const RECIPES = [
   source:{ name:"Minimalist Baker", url:"https://minimalistbaker.com/southwest-tofu-scramble/", note:"Adapted from Dana Shultz. Metric conversions are approximate." }
 },
 {
-  id:"hummus-that-changed-everything", category:"Other", theme:"sesame", scene:"bowl", icon:"i-tahini",
+  id:"hummus-that-changed-everything", category:"Other", theme:"herb", scene:"bowl", icon:"i-tahini",
   title:"The Hummus That", title2:"Changed Everything",
   blurb:"Far more lemon than you think is reasonable. That's the entire secret.",
   kicker:"Most homemade hummus is dull because it's under-lemoned and under-salted. This one uses most of two lemons. Blend the tahini and lemon juice together first and it whips up pale and creamy before anything else goes in.",
@@ -2064,6 +2082,711 @@ const RECIPES = [
   sheetNotes:"Bicarb goes into the hot dates off the heat — it froths. Cool before adding to the creamed margarine or it splits. Don't stir the toffee sauce as it simmers. Prick the hot pudding right through before pouring half the sauce over. Better the next day.",
   source:{ name:"Food.com", url:"https://www.food.com/recipe/vegan-sticky-date-pudding-220702", note:"Adapted from a Food.com community recipe." }
 }
+,
+{
+  id:"eggplant-katsu-curry", category:"Dinners", theme:"herb", scene:"skillet", icon:"i-eggplant",
+  title:"Eggplant Katsu", title2:"Curry",
+  blurb:"Crumbed eggplant, shallow-fried, under a thick Japanese curry sauce.",
+  kicker:"Eggplant takes to crumbing better than almost anything — it goes creamy inside while the panko crust stays crisp. The sauce is onion, curry powder and garam masala thickened with cornflour, sharp with lemon. Over rice.",
+  tags:["Vegan","45 minutes","Fried"],
+  facts:[["15 min","PREP"],["30 min","COOK"],["Pan + pot","WASH-UP"]],
+  base:2, step:1, min:1, max:6,
+  servingNote:"Serves 2. Crumbed eggplant does not keep — eat it straight away.",
+  intro:"Cut the eggplant into half moons about 1 cm thick so they cook through.",
+  methodIntro:"Fry the eggplant first and hold it in a low oven while the sauce comes together.",
+  sheetMeta:"Vegan · Prep 15 min · Cook 30 min · Pan + pot",
+  groups:[
+    { name:"The eggplant", items:[
+      { icon:"i-eggplant", name:"eggplant, in 1 cm half moons", amt:400, unit:"g" },
+      { icon:"i-flour", name:"plain flour", amt:65, unit:"g" },
+      { icon:"i-milk", name:"nut milk", amt:250, unit:"ml" },
+      { icon:"i-flour", name:"panko breadcrumbs", amt:60, unit:"g" },
+      { icon:"i-oil", name:"neutral oil, for shallow frying", amt:0, unit:"" }
+    ]},
+    { name:"The curry sauce", items:[
+      { icon:"i-oil", name:"sesame oil", amt:30, unit:"ml" },
+      { icon:"i-onion", name:"onion, chopped", amt:80, unit:"g" },
+      { icon:"i-spice", name:"curry powder", amt:12, unit:"g" },
+      { icon:"i-garlic", name:"garlic, finely chopped", amt:2, unit:"cloves", round:true },
+      { icon:"i-ginger", name:"ginger, finely chopped", amt:25, unit:"g" },
+      { icon:"i-soy", name:"soy sauce", amt:5, unit:"ml" },
+      { icon:"i-broth", name:"vegetable stock", amt:250, unit:"ml" },
+      { icon:"i-spice", name:"garam masala", amt:8, unit:"g" },
+      { icon:"i-flour", name:"cornflour", amt:10, unit:"g" },
+      { icon:"i-lemon", name:"lemon, juiced", amt:0.5, unit:"", round:true }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-grain", name:"steamed rice", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Set up the crumbing", t:"Whisk the <strong>plain flour</strong> and <strong>nut milk</strong> into a batter in one bowl, and spread the <strong>panko breadcrumbs</strong> on a plate." },
+    { h:"Crumb the eggplant", t:"Dip each piece of <strong>eggplant</strong> in the batter, let it drip, then press it into the <strong>breadcrumbs</strong> on both sides." },
+    { h:"Fry", t:"Shallow fry in hot <strong>oil</strong> until deep golden on both sides. Onto paper towel, then into a low oven to stay warm.", time:"8 min" },
+    { h:"Start the sauce", t:"Wipe the pan, add the <strong>sesame oil</strong> and cook the <strong>onion</strong> until translucent.", time:"5 min" },
+    { h:"Spices in", t:"Add the <strong>curry powder</strong>, <strong>garlic</strong>, <strong>ginger</strong> and <strong>soy sauce</strong> and cook until the onion is coated and going dark.", time:"2 min" },
+    { h:"Thicken", t:"Pour in the <strong>vegetable stock</strong> with the <strong>garam masala</strong> and <strong>lemon</strong> juice, then stir the <strong>cornflour</strong> into a little cold water and add it. Cook until it coats a spoon.", time:"5 min" },
+    { h:"Serve", t:"<strong>Rice</strong> down, sauce over it, crumbed <strong>eggplant</strong> on top so the crust stays crisp." }
+  ],
+  tips:[
+    ["Sauce over the rice, not the eggplant.","Pour it beside or under. Sauce on top turns a good crust to mush in seconds."],
+    ["Panko, not fine breadcrumbs.","The big flakes are what make it crunchy rather than sandy."],
+    ["Oil hot enough.","A crumb should sizzle immediately. Cool oil means the eggplant drinks it."],
+    ["Salt the eggplant if you have time.","Twenty minutes salted, then patted dry, and it fries with less oil."],
+    ["The sauce reheats.","Make double and keep it. The eggplant has to be fresh, but the sauce is good for three days."]
+  ],
+  sheetNotes:"Panko only. Oil hot enough that a crumb sizzles on contact. Pour the sauce under or beside the eggplant, never over it. Salting the eggplant 20 min first means less oil absorbed. Sauce keeps 3 days; the eggplant doesn't.",
+  source:{ name:"Bosh!", url:"https://www.copymethat.com/r/2Iw07bn/bosh-eggplant-katsu-curry/", note:"Adapted from Bosh!. Metric conversions are approximate." }
+},
+{
+  id:"garlic-roasted-vegetable-pesto-pasta", category:"Dinners", theme:"herb", scene:"tray", icon:"i-pasta",
+  title:"Garlic Roasted Veg", title2:"& Pesto Pasta",
+  blurb:"Two trays of roasted vegetables through rigatoni with a spinach-heavy pesto.",
+  kicker:"Eight vegetables, roasted hard with garlic until the edges catch. The pesto stretches basil with spinach, which keeps it green and cheaper. A good dish for clearing out a crisper drawer.",
+  tags:["Vegetarian","50 minutes","Uses up veg"],
+  facts:[["20 min","PREP"],["30 min","ROAST"],["2 trays + pot","WASH-UP"]],
+  base:4, step:1, min:2, max:10,
+  servingNote:"Serves 4 generously. Keeps 3 days, good cold.",
+  intro:"The vegetable list is a suggestion — about 1.5 kg of whatever you have.",
+  methodIntro:"Oven at 200°C. Pesto and pasta happen while the trays roast.",
+  sheetMeta:"Vegetarian · Prep 20 min · Roast 30 min · Oven 200°C",
+  groups:[
+    { name:"The trays", items:[
+      { icon:"i-tomato", name:"cherry tomatoes", amt:200, unit:"g" },
+      { icon:"i-onion", name:"red onion, chopped", amt:150, unit:"g" },
+      { icon:"i-capsicum", name:"red and yellow capsicum, chopped", amt:360, unit:"g" },
+      { icon:"i-zucchini", name:"zucchini, chopped", amt:200, unit:"g" },
+      { icon:"i-eggplant", name:"eggplant, chopped", amt:300, unit:"g" },
+      { icon:"i-broccoli", name:"broccoli florets", amt:200, unit:"g" },
+      { icon:"i-cauliflower", name:"cauliflower florets", amt:300, unit:"g" },
+      { icon:"i-garlic", name:"garlic, chopped", amt:3, unit:"cloves", round:true },
+      { icon:"i-oil", name:"olive oil", amt:45, unit:"ml" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }
+    ]},
+    { name:"The pesto", items:[
+      { icon:"i-spinach", name:"spinach or kale, packed", amt:30, unit:"g" },
+      { icon:"i-herb", name:"basil, packed", amt:25, unit:"g" },
+      { icon:"i-nuts", name:"almonds or pine nuts", amt:35, unit:"g" },
+      { icon:"i-garlic", name:"garlic, chopped", amt:2, unit:"cloves", round:true },
+      { icon:"i-oil", name:"olive oil", amt:140, unit:"ml" },
+      { icon:"i-cheese", name:"parmesan, grated", amt:50, unit:"g" }
+    ]},
+    { name:"The pasta", items:[
+      { icon:"i-pasta", name:"rigatoni", amt:450, unit:"g" },
+      { icon:"i-salt", name:"salt for the water", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Oven on", t:"200°C, two trays lined.", time:"10 min" },
+    { h:"Toss and spread", t:"Toss all the vegetables and the <strong>garlic</strong> with the <strong>olive oil</strong>, <strong>salt</strong> and <strong>pepper</strong>, then spread them across both trays. Crowding one tray steams them." },
+    { h:"Roast", t:"Until golden at the edges, stirring halfway.", time:"20–30 min" },
+    { h:"Make the pesto", t:"Pulse the <strong>spinach</strong>, <strong>basil</strong>, <strong>almonds</strong> and <strong>garlic</strong> in a processor, then drizzle the <strong>olive oil</strong> in with the motor running. Stir the <strong>parmesan</strong> through at the end.", time:"5 min" },
+    { h:"Pasta on", t:"Cook the <strong>rigatoni</strong> in well-salted water to the packet time, saving a cup of the water.", time:"12 min" },
+    { h:"Combine", t:"Pasta, roasted vegetables and <strong>pesto</strong> in the pot, loosened with pasta water until everything is coated." },
+    { h:"Serve", t:"More <strong>parmesan</strong> and whatever herbs are left over." }
+  ],
+  tips:[
+    ["Two trays, not one.","Fifteen hundred grams of vegetables on a single tray will steam. Spread them out."],
+    ["Spinach stretches the basil.","Basil alone is expensive and the pesto browns faster. Half spinach keeps it green for days."],
+    ["Stir the parmesan in by hand.","Blending cheese into pesto makes it gluey. Fold it through at the end."],
+    ["Make it vegan.","Skip the parmesan and add two tablespoons of nutritional yeast and a bit more salt."],
+    ["Use what you have.","The list is eight vegetables because that's what the original used. Any 1.5 kg that roasts well works."]
+  ],
+  sheetNotes:"Two trays — crowding steams the vegetables. Half spinach, half basil in the pesto keeps it green and cheap. Fold the parmesan in by hand, don't blend it. Vegan: skip the cheese, add 2 tbsp nutritional yeast. Keeps 3 days.",
+  source:{ name:"Olive & Mango", url:"https://www.oliveandmango.com/garlic-roasted-vegetable-pesto-pasta/", note:"Adapted from Olive & Mango. Metric conversions are approximate." }
+},
+{
+  id:"japanese-vegetable-curry", category:"Dinners", theme:"spice", scene:"pot", icon:"i-potato",
+  title:"Japanese Curry",
+  blurb:"The thick, mild, roux-based curry, made with tofu instead of chicken.",
+  kicker:"The flour goes in dry with the vegetables and makes the roux in the pot, which is why this is thicker and glossier than an Indian curry and much milder. Potato and carrot in big chunks. Over rice, always.",
+  tags:["Vegan","40 minutes","One pot"],
+  facts:[["10 min","PREP"],["30 min","SIMMER"],["1 pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4. Thickens overnight. Keeps 3 days.",
+  intro:"Firm tofu or large mushrooms in place of the chicken — both hold up to the simmer.",
+  methodIntro:"Everything builds in one pot. The flour goes in before the water, not after.",
+  sheetMeta:"Vegan · Prep 10 min · Simmer 30 min · One pot",
+  groups:[
+    { name:"The pot", items:[
+      { icon:"i-butter", name:"vegan butter", amt:40, unit:"g" },
+      { icon:"i-onion", name:"onion, thinly sliced", amt:200, unit:"g" },
+      { icon:"i-tofu", name:"firm tofu or mushrooms, in cubes", amt:400, unit:"g" },
+      { icon:"i-ginger", name:"ginger, grated", amt:5, unit:"g" },
+      { icon:"i-potato", name:"potato, in large chunks", amt:350, unit:"g" },
+      { icon:"i-carrot", name:"carrot, in large chunks", amt:250, unit:"g" }
+    ]},
+    { name:"The sauce", items:[
+      { icon:"i-spice", name:"curry powder", amt:16, unit:"g" },
+      { icon:"i-chilli", name:"chilli powder", amt:1, unit:"tsp" },
+      { icon:"i-sugar", name:"sugar", amt:12, unit:"g" },
+      { icon:"i-salt", name:"salt", amt:1, unit:"tsp" },
+      { icon:"i-salt", name:"black pepper", amt:0.5, unit:"tsp" },
+      { icon:"i-flour", name:"plain flour", amt:50, unit:"g" },
+      { icon:"i-broth", name:"water", amt:1000, unit:"ml" },
+      { icon:"i-broth", name:"vegetable stock cube", amt:1, unit:"cube", round:true }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-grain", name:"steamed rice", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Brown the onion", t:"Melt the <strong>vegan butter</strong> in a heavy pot over medium and cook the <strong>onion</strong> until soft and lightly browned.", time:"5 min" },
+    { h:"Tofu and ginger", t:"Add the <strong>tofu</strong> and <strong>ginger</strong> and cook until the tofu takes a bit of colour.", time:"3 min" },
+    { h:"Vegetables and spices", t:"In go the <strong>potato</strong>, <strong>carrot</strong>, <strong>curry powder</strong>, <strong>chilli powder</strong>, <strong>salt</strong>, <strong>sugar</strong> and <strong>black pepper</strong>. Stir to coat.", time:"2 min" },
+    { h:"The flour", t:"Sprinkle the <strong>plain flour</strong> over and stir it through everything. It will look dry and claggy. That's correct." },
+    { h:"Liquid", t:"Add the <strong>water</strong> and the <strong>stock cube</strong> and stir hard until no lumps of flour remain." },
+    { h:"Simmer", t:"Cover and cook on low-medium until the vegetables are tender and the sauce is thick and glossy, stirring now and then. More water if it tightens too far.", time:"20–30 min" },
+    { h:"Taste and serve", t:"Adjust the <strong>salt</strong>. Over <strong>steamed rice</strong>, in a shallow bowl." }
+  ],
+  tips:[
+    ["Made vegan.","The original is a chicken curry. Tofu or big mushroom chunks in place of the chicken, vegan butter for the butter, a vegetable stock cube for the chicken one. Nothing else changes."],
+    ["Stir out the flour lumps early.","Once it's simmering they set. Thirty seconds of hard stirring after the water goes in."],
+    ["Mild by design.","Japanese curry is not meant to be hot. The chilli powder is for depth; leave it out for kids."],
+    ["Big chunks of potato.","Small pieces disintegrate into the sauce over half an hour. Keep them a good 3 cm."],
+    ["Better the next day.","It thickens to a paste in the fridge. Loosen with water when you reheat."]
+  ],
+  sheetNotes:"Vegan version: tofu or mushrooms for the chicken, vegan butter, vegetable stock cube. Flour goes in dry and gets stirred through before the water. Stir out lumps immediately. Big 3 cm potato chunks. Thickens overnight; loosen with water.",
+  source:{ name:"Khin's Kitchen", url:"https://khinskitchen.com/japanese-chicken-curry/", note:"Adapted from Khin's Kitchen and made vegan. Metric conversions are approximate." }
+},
+{
+  id:"mushroom-san-choy-bow", category:"Dinners", theme:"chilli", scene:"skillet", icon:"i-lettuce",
+  title:"Mushroom San", title2:"Choy Bow",
+  blurb:"Half a kilo of mushrooms cooked hard in a wok, spooned into iceberg cups.",
+  kicker:"The mushrooms have to be left alone in the pan to brown rather than stirred into steaming. They cook down to half their size and take on a meaty texture. Water chestnuts for crunch, a lot of mint and coriander, peanuts on top.",
+  tags:["Vegan","50 minutes","Wok"],
+  facts:[["40 min","PREP"],["10 min","COOK"],["1 wok","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4. Filling keeps 2 days; assemble at the table.",
+  intro:"Wipe the mushrooms with a damp cloth rather than washing them.",
+  methodIntro:"Everything chopped first — the cooking is ten minutes on high heat.",
+  sheetMeta:"Vegan · Prep 40 min · Cook 10 min · One wok",
+  groups:[
+    { name:"The filling", items:[
+      { icon:"i-mushroom", name:"button mushrooms, in 1.5 cm cubes", amt:500, unit:"g" },
+      { icon:"i-oil", name:"peanut or neutral oil", amt:30, unit:"ml" },
+      { icon:"i-onion", name:"brown onion, finely chopped", amt:150, unit:"g" },
+      { icon:"i-garlic", name:"garlic, finely chopped", amt:2, unit:"cloves", round:true },
+      { icon:"i-ginger", name:"ginger, grated", amt:5, unit:"g" },
+      { icon:"i-potato", name:"water chestnuts, in small cubes", amt:70, unit:"g" },
+      { icon:"i-herb", name:"spring onions, in 1.5 cm slices", amt:30, unit:"g" }
+    ]},
+    { name:"The sauce", items:[
+      { icon:"i-lemon", name:"lime juice", amt:10, unit:"ml" },
+      { icon:"i-soy", name:"soy sauce or tamari", amt:10, unit:"ml" },
+      { icon:"i-sauce", name:"hoisin sauce", amt:10, unit:"ml" },
+      { icon:"i-sauce", name:"vegan oyster sauce", amt:30, unit:"ml" },
+      { icon:"i-oil", name:"roasted sesame oil", amt:5, unit:"ml" }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-lettuce", name:"iceberg lettuce leaves", amt:8, unit:"leaves", round:true },
+      { icon:"i-herb", name:"mint, roughly chopped", amt:15, unit:"g" },
+      { icon:"i-herb", name:"coriander, roughly chopped", amt:15, unit:"g" },
+      { icon:"i-nuts", name:"roasted peanuts, chopped", amt:35, unit:"g" },
+      { icon:"i-chilli", name:"long red chilli, sliced", amt:1, unit:"chilli", round:true, opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Prep everything", t:"Wipe and cube the <strong>mushrooms</strong>, chop the <strong>onion</strong>, <strong>garlic</strong>, <strong>ginger</strong>, <strong>water chestnuts</strong>, <strong>spring onions</strong> and herbs. Wash and trim the <strong>lettuce</strong> leaves.", time:"40 min" },
+    { h:"Get the wok hot", t:"<strong>Oil</strong> in a wok over high heat until it shimmers." },
+    { h:"Brown the mushrooms", t:"Add the <strong>mushrooms</strong> and leave them alone for a minute. Stir, leave again, repeat until they've cooked down to half their volume.", time:"3–4 min" },
+    { h:"Onion and ginger", t:"Add the <strong>onion</strong> and <strong>ginger</strong> and cook until the onion softens, then the <strong>garlic</strong> for a minute.", time:"3 min" },
+    { h:"Sauce in", t:"Mix the <strong>lime juice</strong>, <strong>soy sauce</strong>, <strong>hoisin</strong> and <strong>oyster sauce</strong>, pour it in and toss. A tablespoon of water if it looks dry.", time:"2 min" },
+    { h:"Fresh things last", t:"Off the heat, toss through the <strong>spring onions</strong>, <strong>water chestnuts</strong>, <strong>mint</strong>, <strong>coriander</strong> and <strong>sesame oil</strong>." },
+    { h:"Serve", t:"Into a bowl, <strong>peanuts</strong> and <strong>chilli</strong> on top, <strong>lettuce</strong> leaves alongside for people to fill themselves." }
+  ],
+  tips:[
+    ["Leave the mushrooms alone.","Constant stirring makes them release water and stew. Let them sit and catch, then stir, then let them sit again."],
+    ["Check the oyster sauce.","Vegan oyster sauce is mushroom-based and sold at any Asian grocer. Regular oyster sauce is not vegetarian."],
+    ["Iceberg is the right lettuce.","Cos and butter lettuce go limp. Iceberg holds a cup and stays cold and crunchy."],
+    ["Trim the leaves with scissors.","Cut them into rough circles so they hold together instead of tearing when filled."],
+    ["Don't dress it early.","The lettuce wilts within minutes of hot filling going in. Assemble at the table."]
+  ],
+  sheetNotes:"Leave the mushrooms undisturbed to brown — stirring makes them stew. Use vegan (mushroom) oyster sauce. Iceberg only; trim leaves into cups with scissors. Herbs and sesame oil go in off the heat. Assemble at the table.",
+  source:{ name:"It's Not Complicated Recipes", url:"https://itsnotcomplicatedrecipes.com/mushroom-san-choy-bow/", note:"Adapted from It's Not Complicated Recipes." }
+},
+{
+  id:"nutty-pasta", category:"Dinners", theme:"herb", scene:"pot", icon:"i-nuts",
+  title:"Nutty Pasta",
+  blurb:"Soaked walnuts blended with oat milk into a creamy sauce. No dairy, no cream.",
+  kicker:"Soaked walnuts blend into something between a cream sauce and a pesto — rich, slightly bitter, good with nutmeg. Grape tomatoes warmed through in it stop it being heavy. Thirty minutes, including the blending.",
+  tags:["Vegan","30 minutes","Blender"],
+  facts:[["10 min","PREP"],["20 min","COOK"],["Pot + blender","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4. Walnuts need soaking overnight. Keeps 3 days.",
+  intro:"Soak the walnuts the night before — it takes the bitterness out and softens them.",
+  methodIntro:"Sauté, blend, combine. The sauce is done before the pasta is.",
+  sheetMeta:"Vegan · Prep 10 min · Cook 20 min · Soak walnuts overnight",
+  groups:[
+    { name:"The sauce", items:[
+      { icon:"i-oil", name:"extra virgin olive oil", amt:30, unit:"ml" },
+      { icon:"i-onion", name:"red onion, chopped", amt:150, unit:"g" },
+      { icon:"i-garlic", name:"garlic, chopped", amt:2, unit:"cloves", round:true },
+      { icon:"i-nuts", name:"walnuts, soaked overnight", amt:100, unit:"g" },
+      { icon:"i-milk", name:"oat milk", amt:60, unit:"ml" },
+      { icon:"i-spice", name:"ground nutmeg", amt:0, unit:"" },
+      { icon:"i-cheese", name:"nutritional yeast", amt:10, unit:"g" },
+      { icon:"i-cheese", name:"vegan parmesan", amt:15, unit:"g" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }
+    ]},
+    { name:"The pasta", items:[
+      { icon:"i-pasta", name:"multigrain or protein pasta", amt:250, unit:"g" },
+      { icon:"i-tomato", name:"grape tomatoes, chopped", amt:250, unit:"g" },
+      { icon:"i-herb", name:"parsley, chopped", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Soak the walnuts", t:"Cover the <strong>walnuts</strong> in cold water and leave them overnight. Drain before using.", time:"overnight" },
+    { h:"Pasta on", t:"Cook the <strong>pasta</strong> in well-salted water to the packet time. Keep a ladle of the water before draining.", time:"10 min" },
+    { h:"Soften onion and garlic", t:"Heat the <strong>olive oil</strong> in a non-stick pan and sauté the <strong>red onion</strong> and <strong>garlic</strong>.", time:"2–3 min" },
+    { h:"Blend the sauce", t:"Into a blender with the drained <strong>walnuts</strong>, <strong>oat milk</strong>, <strong>nutmeg</strong>, <strong>nutritional yeast</strong> and <strong>vegan parmesan</strong>. Blend until smooth.", time:"2 min" },
+    { h:"Warm it with tomatoes", t:"Tip the sauce into a saucepan, season with <strong>salt</strong> and <strong>pepper</strong>, add the <strong>tomatoes</strong> and warm through.", time:"3 min" },
+    { h:"Toss", t:"Combine with the drained <strong>pasta</strong> and enough pasta water to coat everything." },
+    { h:"Serve", t:"<strong>Parsley</strong> and more <strong>vegan parmesan</strong> over the top." }
+  ],
+  tips:[
+    ["Soak them or it's bitter.","Walnut skins carry tannins. Overnight in cold water, or an hour in hot water at a push."],
+    ["Nutmeg, barely.","A scrape. It's there to make the sauce read as creamy rather than nutty, and it dominates fast."],
+    ["Pasta water is the sauce.","Blended nuts tighten as they sit. Keep a full ladle and use it."],
+    ["Protein pasta is optional.","Any short or long pasta works. The original uses a multigrain protein pasta; ordinary wholemeal is fine."],
+    ["Makes a good dip.","Leftover sauce thinned with a little more oat milk is good on bread or with vegetables."]
+  ],
+  sheetNotes:"Soak the walnuts overnight or the sauce is bitter. Nutmeg in a scrape only. Keep a full ladle of pasta water — blended nuts tighten quickly. Tomatoes are warmed through, not cooked down. Keeps 3 days.",
+  source:{ name:"Good Chef Bad Chef", url:"https://www.goodchefbadchef.com.au/our-recipe/nutty-pasta/", note:"Adapted from Good Chef Bad Chef." }
+},
+{
+  id:"quick-broccoli-pasta", category:"Dinners", theme:"sesame", scene:"pot", icon:"i-broccoli",
+  title:"Really Quick", title2:"Broccoli Pasta",
+  blurb:"Broccoli cooked in the pasta water, sauce shaken in a jar. Fifteen minutes.",
+  kicker:"The broccoli goes into the same pot as the pasta for the last two minutes, so there is one pot and no second step. The sauce is shaken in a jar with a splash of pasta water and emulsifies as you stir. Cheese melts into it off the heat.",
+  tags:["Vegetarian","15 minutes","One pot"],
+  facts:[["5 min","PREP"],["10 min","COOK"],["1 pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4 as a main, 6–8 as a side. Best immediately.",
+  intro:"Small shells or another short shape that catches the broccoli.",
+  methodIntro:"One pot, one jar. The whole thing is over in fifteen minutes.",
+  sheetMeta:"Vegetarian · Prep 5 min · Cook 10 min · One pot",
+  groups:[
+    { name:"The pot", items:[
+      { icon:"i-pasta", name:"dried short pasta, small shells", amt:350, unit:"g" },
+      { icon:"i-broccoli", name:"broccoli, in small florets", amt:700, unit:"g" },
+      { icon:"i-cheese", name:"tasty cheese, grated", amt:100, unit:"g" },
+      { icon:"i-salt", name:"salt for the water", amt:0, unit:"" }
+    ]},
+    { name:"Jar sauce", items:[
+      { icon:"i-lemon", name:"lemon zest", amt:2, unit:"tsp" },
+      { icon:"i-lemon", name:"lemon juice", amt:40, unit:"ml" },
+      { icon:"i-oil", name:"extra virgin olive oil", amt:75, unit:"ml" },
+      { icon:"i-cheese", name:"parmesan, finely grated", amt:35, unit:"g" },
+      { icon:"i-garlic", name:"garlic, minced", amt:2, unit:"cloves", round:true },
+      { icon:"i-herb", name:"mixed dried herbs", amt:1, unit:"tsp" },
+      { icon:"i-chilli", name:"chilli flakes", amt:0.5, unit:"tsp" },
+      { icon:"i-sugar", name:"sugar", amt:1, unit:"tsp" },
+      { icon:"i-salt", name:"salt", amt:0.75, unit:"tsp" },
+      { icon:"i-salt", name:"black pepper", amt:0.5, unit:"tsp" }
+    ]}
+  ],
+  steps:[
+    { h:"Water on", t:"A big pot of water with two teaspoons of <strong>salt</strong>, then the <strong>pasta</strong> to the packet time.", time:"10 min" },
+    { h:"Chop the broccoli", t:"Small florets while the pasta cooks. Small matters — they have two minutes." },
+    { h:"Broccoli into the same pot", t:"Add the <strong>broccoli</strong> to the pasta water for the last two minutes.", time:"2 min" },
+    { h:"Shake the sauce", t:"Everything for the sauce into a jar — <strong>lemon zest</strong> and <strong>juice</strong>, <strong>olive oil</strong>, <strong>parmesan</strong>, <strong>garlic</strong>, <strong>dried herbs</strong>, <strong>chilli flakes</strong>, <strong>sugar</strong>, <strong>salt</strong> and <strong>pepper</strong>. Lid on, shake." },
+    { h:"Save the water", t:"Scoop out a cup of pasta water before draining, then return the drained pasta and broccoli to the pot, off the heat." },
+    { h:"Emulsify", t:"Add half a cup of pasta water to the jar, shake again, then pour it in with the <strong>tasty cheese</strong>." },
+    { h:"Stir hard", t:"Stir vigorously so the cheese melts and the sauce comes together, adding more pasta water if it's tight. Taste, season, serve with more <strong>parmesan</strong>." }
+  ],
+  tips:[
+    ["Small florets.","Two minutes in boiling water only cooks small pieces. Anything bigger comes out raw."],
+    ["Pasta water in the jar, not the pot.","Shaking it into the oil and lemon first is what emulsifies the sauce. Poured straight into the pot it splits."],
+    ["Off the heat for the cheese.","Residual heat melts it. On the burner it goes stringy and separates."],
+    ["More broccoli than pasta.","700 g to 350 g looks wrong and is correct — it cooks right down."],
+    ["Make it vegan.","Vegan cheese and nutritional yeast in place of the parmesan; the lemon and garlic carry it."]
+  ],
+  sheetNotes:"Small florets — they only get two minutes. Add pasta water to the sauce jar and shake before pouring, or the sauce splits. Cheese goes in off the heat. 700 g broccoli to 350 g pasta is correct. Eat immediately.",
+  source:{ name:"RecipeTin Eats", url:"https://www.recipetineats.com/quick-broccoli-pasta/", note:"Adapted from Nagi Maehashi." }
+},
+{
+  id:"simple-cauliflower-tacos", category:"Dinners", theme:"chilli", scene:"tray", icon:"i-cauliflower",
+  title:"Simple Cauliflower", title2:"Tacos",
+  blurb:"A whole head of cauliflower roasted hard with cumin, plus quick-pickled onion.",
+  kicker:"The cauliflower is chopped small — core included — and roasted at a serious temperature until as many surfaces as possible are deep brown. Lime hits the hot tray, the beans warm in the residual heat, and the pickled onion cuts through all of it.",
+  tags:["Vegetarian","40 minutes","One tray"],
+  facts:[["10 min","PREP"],["30 min","ROAST"],["1 tray","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4, three tacos each. Filling keeps 3 days.",
+  intro:"Chop the cauliflower small and don't throw the core away — it roasts well.",
+  methodIntro:"Oven at 230°C. Pickle the onion first so it has thirty minutes.",
+  sheetMeta:"Vegetarian · Prep 10 min · Roast 30 min · Oven 230°C",
+  groups:[
+    { name:"Pickled onion", items:[
+      { icon:"i-vinegar", name:"red wine vinegar", amt:30, unit:"ml" },
+      { icon:"i-broth", name:"cold water", amt:22, unit:"ml" },
+      { icon:"i-sugar", name:"caster sugar", amt:0.25, unit:"tsp" },
+      { icon:"i-salt", name:"salt", amt:0.5, unit:"tsp" },
+      { icon:"i-onion", name:"red onion, thinly sliced", amt:80, unit:"g" }
+    ]},
+    { name:"The tray", items:[
+      { icon:"i-cauliflower", name:"cauliflower, chopped small, core and all", amt:1300, unit:"g" },
+      { icon:"i-oil", name:"olive oil", amt:45, unit:"ml" },
+      { icon:"i-spice", name:"ground cumin, heaped", amt:1, unit:"tsp" },
+      { icon:"i-chilli", name:"chilli flakes", amt:0, unit:"" },
+      { icon:"i-salt", name:"salt", amt:1.5, unit:"tsp" },
+      { icon:"i-lemon", name:"lime, halved", amt:1, unit:"", round:true },
+      { icon:"i-beans", name:"black beans, drained and rinsed", amt:240, unit:"g" }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-tortilla", name:"small corn or flour tortillas", amt:12, unit:"tortillas", round:true },
+      { icon:"i-avocado", name:"avocado, thinly sliced", amt:120, unit:"g" },
+      { icon:"i-cheese", name:"cotija or feta, crumbled", amt:70, unit:"g", opt:true },
+      { icon:"i-herb", name:"coriander, chopped", amt:0, unit:"" },
+      { icon:"i-chilli", name:"hot sauce or pickled jalapeños", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Oven on", t:"230°C.", time:"10 min" },
+    { h:"Pickle the onion", t:"Stir the <strong>red wine vinegar</strong>, <strong>water</strong>, <strong>caster sugar</strong> and <strong>salt</strong> together, add the sliced <strong>red onion</strong> and toss. Leave it while everything else happens.", time:"30 min" },
+    { h:"Oil the tray, not the cauliflower", t:"Pour the <strong>olive oil</strong> straight onto a large tray, add the <strong>cauliflower</strong>, sprinkle with <strong>salt</strong>, <strong>chilli flakes</strong> and <strong>cumin</strong> and toss it around on the tray." },
+    { h:"Roast hard", t:"Twenty-five to thirty minutes, tossing at the halfway mark so as many sides as possible go deep brown and crisp.", time:"25–30 min" },
+    { h:"Lime on the hot tray", t:"Straight out of the oven, squeeze half the <strong>lime</strong> over it, then tip the <strong>black beans</strong> onto the tray so they warm through." },
+    { h:"Heat the tortillas", t:"Wrapped tightly in foil in the oven for five minutes, or blistered one at a time in a dry pan.", time:"5 min" },
+    { h:"Build", t:"Cauliflower and beans onto a warm <strong>tortilla</strong>, then <strong>avocado</strong>, <strong>pickled onion</strong>, <strong>cotija</strong>, <strong>coriander</strong> and <strong>hot sauce</strong>. Remaining <strong>lime</strong> in wedges." }
+  ],
+  tips:[
+    ["Chop it small, core included.","Small pieces mean more surface area and more browning. The core roasts as well as the florets."],
+    ["Oil the tray, not the bowl.","Pouring the oil onto the hot tray and tossing there saves a bowl and coats more evenly."],
+    ["Lime while it's hot.","It hisses and the cauliflower absorbs it. Squeezed at the table it just sits on top."],
+    ["Make it vegan.","Skip the cotija or use a vegan feta. Everything else already is."],
+    ["Don't assemble ahead.","Tortillas go soggy within minutes. Components on the table, everyone builds their own."]
+  ],
+  sheetNotes:"Chop the cauliflower small, core included. Oil goes on the tray, then toss the cauliflower in it. 230°C, toss at halfway. Squeeze the lime over the hot tray and warm the beans there. Vegan: skip the cotija. Build at the table.",
+  source:{ name:"Smitten Kitchen", url:"https://smittenkitchen.com/2020/10/simple-cauliflower-tacos/", note:"Adapted from Deb Perelman. Metric conversions are approximate." }
+}
+,
+{
+  id:"vegan-japchae", category:"Dinners", theme:"spice", scene:"skillet", icon:"i-pasta",
+  title:"Vegan Japchae",
+  blurb:"Korean sweet potato glass noodles with smoked tofu and matchstick vegetables.",
+  kicker:"Everything is cut to the same size so it cooks in the same minute, and the vegetables go in hardest-first. The noodles are chewy and slippery and drink the soy and sesame sauce. Twenty-five minutes once the chopping is done.",
+  tags:["Vegan","25 minutes","One wok"],
+  facts:[["15 min","PREP"],["10 min","COOK"],["1 wok + pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4. Good hot, warm or cold. Keeps 2 days.",
+  intro:"Sweet potato starch noodles — dangmyeon — from any Asian grocer. Nothing else behaves the same.",
+  methodIntro:"Noodles and spinach first, then everything stir-fried in stages in one wok.",
+  sheetMeta:"Vegan · Prep 15 min · Cook 10 min · Serves 4",
+  groups:[
+    { name:"The noodles", items:[
+      { icon:"i-pasta", name:"sweet potato glass noodles", amt:250, unit:"g" },
+      { icon:"i-spinach", name:"spinach", amt:100, unit:"g" },
+      { icon:"i-oil", name:"sesame oil, for the noodles", amt:5, unit:"ml" }
+    ]},
+    { name:"The stir-fry", items:[
+      { icon:"i-tofu", name:"smoked firm tofu, in thin rectangles", amt:300, unit:"g" },
+      { icon:"i-zucchini", name:"zucchini, in matchsticks", amt:200, unit:"g" },
+      { icon:"i-carrot", name:"carrot, in matchsticks", amt:130, unit:"g" },
+      { icon:"i-onion", name:"onion, thinly sliced", amt:150, unit:"g" },
+      { icon:"i-herb", name:"spring onions, in lengths", amt:45, unit:"g" },
+      { icon:"i-garlic", name:"garlic, minced", amt:3, unit:"cloves", round:true },
+      { icon:"i-mushroom", name:"dried shiitake, rehydrated and sliced", amt:60, unit:"g" },
+      { icon:"i-seeds", name:"sesame seeds, toasted", amt:0, unit:"" }
+    ]},
+    { name:"The sauce", items:[
+      { icon:"i-soy", name:"soy sauce", amt:75, unit:"ml" },
+      { icon:"i-sugar", name:"sugar", amt:25, unit:"g" },
+      { icon:"i-oil", name:"sesame oil", amt:15, unit:"ml" }
+    ]}
+  ],
+  steps:[
+    { h:"Noodles", t:"Cook the <strong>glass noodles</strong> to the packet, drain, rinse cold and toss with the <strong>sesame oil</strong>. Cut through them a few times with scissors so they're manageable.", time:"6 min" },
+    { h:"Blanch the spinach", t:"Thirty seconds in boiling water, then straight into cold. Squeeze it dry and roughly chop.", time:"1 min" },
+    { h:"Cut everything the same size", t:"<strong>Zucchini</strong>, <strong>carrot</strong> and <strong>onion</strong> into matchsticks, <strong>shiitake</strong> sliced, <strong>tofu</strong> into thin rectangles." },
+    { h:"Mix the sauce", t:"<strong>Soy sauce</strong>, <strong>sugar</strong> and <strong>sesame oil</strong> stirred together in a bowl." },
+    { h:"Brown the tofu", t:"In a large wok over medium-high with a little <strong>sesame oil</strong>, fry the <strong>smoked tofu</strong> until lightly browned on each side, then set it aside.", time:"3 min" },
+    { h:"Vegetables in stages", t:"Same wok: <strong>onion</strong> and <strong>garlic</strong> for a minute, then <strong>shiitake</strong> and <strong>carrot</strong> for a minute, then <strong>zucchini</strong> and <strong>spring onions</strong> for a minute.", time:"3 min" },
+    { h:"Bring it together", t:"Drop the heat, add the <strong>noodles</strong>, <strong>spinach</strong>, <strong>tofu</strong> and the sauce, and toss until it's all absorbed.", time:"2 min" },
+    { h:"Serve", t:"<strong>Sesame seeds</strong> over the top." }
+  ],
+  tips:[
+    ["Sweet potato noodles specifically.","Dangmyeon. Mung bean vermicelli goes to mush and rice noodles break. Worth the trip to the Asian grocer."],
+    ["Cut the noodles.","They're absurdly long. Two or three snips with scissors after draining."],
+    ["Same-size matchsticks.","This is most of the work and the reason the dish works — everything finishes at the same moment."],
+    ["Smoked tofu if you can find it.","Plain firm tofu works but smoked adds the savoury depth that would otherwise come from beef."],
+    ["Good cold.","Japchae is often served at room temperature. It's a genuinely good lunchbox dish."]
+  ],
+  sheetNotes:"Sweet potato glass noodles (dangmyeon) only. Snip the noodles after draining. Cut all vegetables to matching matchsticks. Vegetables go in hardest-first, one minute apart. Good hot, warm or cold; keeps 2 days.",
+  source:{ name:"Okonomi Kitchen", url:"https://okonomikitchen.com/vegan-japchae/", note:"Adapted from Okonomi Kitchen." }
+},
+{
+  id:"vegan-mushroom-wellington", category:"Dinners", theme:"herb", scene:"tray", icon:"i-mushroom",
+  title:"Vegan Mushroom", title2:"Wellington",
+  blurb:"A baked mushroom, lentil and walnut log, braided into puff pastry. The Christmas one.",
+  kicker:"The filling is baked into a firm log before it goes anywhere near the pastry, which is why this one slices instead of collapsing. Miso, tomato paste and nutritional yeast do the savoury work. Two and a half hours, most of it unattended.",
+  tags:["Vegan","2½ hours","Centrepiece"],
+  facts:[["35 min","BAKE FILLING"],["35 min","BAKE PASTRY"],["Serves 8","YIELD"]],
+  base:8, step:2, min:4, max:16,
+  servingNote:"Serves 8. The filling log can be made a day ahead.",
+  intro:"A mix of shiitake and Swiss brown gives more depth than button mushrooms alone.",
+  methodIntro:"Oven at 190°C. Filling baked and cooled completely, then wrapped and baked again.",
+  sheetMeta:"Vegan · Bake filling 35 min · Bake pastry 35 min · Serves 8",
+  groups:[
+    { name:"The filling", items:[
+      { icon:"i-lentil", name:"dried brown or green lentils", amt:60, unit:"g" },
+      { icon:"i-oil", name:"olive oil", amt:15, unit:"ml" },
+      { icon:"i-onion", name:"onion, chopped", amt:120, unit:"g" },
+      { icon:"i-garlic", name:"garlic, chopped", amt:6, unit:"cloves", round:true },
+      { icon:"i-mushroom", name:"mushrooms, shiitake and Swiss brown", amt:230, unit:"g" },
+      { icon:"i-herb", name:"thyme leaves", amt:4, unit:"g" },
+      { icon:"i-herb", name:"rosemary, chopped", amt:4, unit:"g" },
+      { icon:"i-spice", name:"paprika", amt:1, unit:"tsp" },
+      { icon:"i-salt", name:"salt and black pepper", amt:1, unit:"tsp" }
+    ]},
+    { name:"The binder", items:[
+      { icon:"i-nuts", name:"walnuts, toasted", amt:110, unit:"g" },
+      { icon:"i-miso", name:"white or yellow miso paste", amt:35, unit:"g" },
+      { icon:"i-cheese", name:"nutritional yeast", amt:10, unit:"g" },
+      { icon:"i-sauce", name:"tomato paste", amt:15, unit:"g" },
+      { icon:"i-lemon", name:"lemon juice", amt:20, unit:"ml" },
+      { icon:"i-flour", name:"panko breadcrumbs", amt:20, unit:"g" },
+      { icon:"i-flour", name:"plain flour", amt:32, unit:"g" }
+    ]},
+    { name:"The pastry", items:[
+      { icon:"i-pastry", name:"vegan puff pastry sheet", amt:1, unit:"sheet", round:true },
+      { icon:"i-milk", name:"plant milk", amt:15, unit:"ml" },
+      { icon:"i-oil", name:"olive or neutral oil", amt:15, unit:"ml" },
+      { icon:"i-salt", name:"flaky sea salt", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Cook the lentils", t:"Simmer the <strong>lentils</strong> until tender, drain, and put them in the fridge to cool.", time:"20–30 min" },
+    { h:"Chop the mushrooms", t:"Pulse the <strong>mushrooms</strong> in a processor until finely chopped, or do it by hand." },
+    { h:"Cook them down", t:"<strong>Olive oil</strong> in a large pan, <strong>onion</strong> with a pinch of salt until golden, then the <strong>garlic</strong>, <strong>mushrooms</strong>, <strong>thyme</strong>, <strong>rosemary</strong>, <strong>paprika</strong> and <strong>pepper</strong>. Cook until all the liquid has gone, season with <strong>salt</strong>, then chill.", time:"15 min" },
+    { h:"Toast and grind the walnuts", t:"Dry pan, medium-low, tossing, then into the processor and pulse to fine crumbs.", time:"5 min" },
+    { h:"Make the filling", t:"Cooled <strong>lentils</strong> and mushroom mixture into the processor with the <strong>miso</strong>, <strong>nutritional yeast</strong>, <strong>tomato paste</strong> and <strong>lemon juice</strong>. Blend until sticky, then add the <strong>walnuts</strong>, <strong>panko</strong> and <strong>flour</strong> and blend again." },
+    { h:"Shape and bake the log", t:"On a lined tray, form it into a log about 18 cm long, 12 cm wide and no more than 2.5 cm tall. Bake at 190°C until firm and crisp outside, then cool completely.", time:"35 min" },
+    { h:"Braid it", t:"Roll the <strong>puff pastry</strong> to about 23 × 33 cm, sit the cooled log in the middle and cut nine 2.5 cm strips down each side. Fold the strips over alternately, pinch the ends, and prick the top." },
+    { h:"Glaze and bake", t:"Whisk the <strong>plant milk</strong> and <strong>oil</strong> and brush it all over, scatter <strong>flaky salt</strong>, chill 15 minutes, then bake at 190°C for 25 minutes and 220°C for 10 more. Rest before slicing.", time:"35 min + 10 rest" }
+  ],
+  tips:[
+    ["Bake the filling first. Always.","This is the difference between a wellington that slices and one that spills. Raw filling steams inside the pastry."],
+    ["Cool it completely.","Warm filling melts the butter in the pastry before it reaches the oven and you lose the puff."],
+    ["Make the log a day ahead.","Bake it, cool it, wrap it, fridge. Then it's twenty minutes of assembly on the day."],
+    ["Chill before baking.","Fifteen minutes in the fridge after braiding. Cold pastry rises higher."],
+    ["Rest before cutting.","Ten minutes. Straight from the oven it's too soft to hold a slice."]
+  ],
+  sheetNotes:"Bake the filling into a firm log first and cool it completely — this is what makes it sliceable. The log can be made a day ahead. Chill the braided wellington 15 min before baking. 190°C for 25 min, then 220°C for 10. Rest 10 min before slicing.",
+  source:{ name:"Rainbow Plant Life", url:"https://rainbowplantlife.com/the-best-vegan-wellington-vegan-mushroom-wellington/", note:"Adapted from Nisha Vora. Metric conversions are approximate." }
+},
+{
+  id:"instant-noodle-soup-bowl", category:"Other", theme:"chilli", scene:"bowl", icon:"i-miso",
+  title:"Instant Noodle", title2:"Soup Bowl",
+  blurb:"A jar you build in the fridge and pour boiling water into at your desk.",
+  kicker:"Miso, chilli garlic sauce and tamari at the bottom, dry vermicelli and raw vegetables packed on top. Boiling water at lunchtime and five minutes. It exists to replace the packet stuff and it costs about the same.",
+  tags:["Vegan","5 minutes","Make ahead"],
+  facts:[["10 min","PACK"],["5 min","BREW"],["Jar only","WASH-UP"]],
+  base:1, step:1, min:1, max:4,
+  servingNote:"One jar per person. Packs up to 3 days ahead.",
+  intro:"Everything raw and dry — nothing is cooked before the water goes in.",
+  methodIntro:"Seasonings at the bottom, noodles next, vegetables on top.",
+  sheetMeta:"Vegan · Pack 10 min · Brew 5 min · One jar",
+  groups:[
+    { name:"The broth base", items:[
+      { icon:"i-miso", name:"miso paste", amt:10, unit:"g" },
+      { icon:"i-chilli", name:"chilli garlic sauce", amt:0.5, unit:"tsp" },
+      { icon:"i-soy", name:"tamari or soy sauce", amt:22, unit:"ml" }
+    ]},
+    { name:"The jar", items:[
+      { icon:"i-pasta", name:"rice vermicelli, dry", amt:50, unit:"g" },
+      { icon:"i-tofu", name:"extra firm tofu, cubed", amt:100, unit:"g" },
+      { icon:"i-carrot", name:"carrot, julienned", amt:30, unit:"g" },
+      { icon:"i-pea", name:"snow peas, halved", amt:35, unit:"g" },
+      { icon:"i-pea", name:"bean sprouts", amt:30, unit:"g" },
+      { icon:"i-seeds", name:"bamboo shoots", amt:35, unit:"g" },
+      { icon:"i-broccoli", name:"broccoli, thinly sliced", amt:30, unit:"g" },
+      { icon:"i-mushroom", name:"enoki mushrooms", amt:25, unit:"g" }
+    ]},
+    { name:"To finish", items:[
+      { icon:"i-broth", name:"boiling water", amt:500, unit:"ml" },
+      { icon:"i-spinach", name:"seaweed snack sheets", amt:2, unit:"sheets", round:true, opt:true },
+      { icon:"i-nuts", name:"peanuts, chopped", amt:10, unit:"g", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Seasonings first", t:"<strong>Miso paste</strong>, <strong>chilli garlic sauce</strong> and <strong>tamari</strong> into the bottom of a jar or a deep bowl." },
+    { h:"Noodles next", t:"Dry <strong>rice vermicelli</strong> on top of the seasonings." },
+    { h:"Pack the rest", t:"<strong>Tofu</strong>, <strong>carrot</strong>, <strong>snow peas</strong>, <strong>bean sprouts</strong>, <strong>bamboo shoots</strong>, <strong>broccoli</strong> and <strong>enoki</strong> packed in on top." },
+    { h:"Into the fridge", t:"Lid on. Up to three days ahead." },
+    { h:"Bring it to room temperature", t:"If it's a glass jar straight from the fridge, let it sit out for a few minutes. Boiling water into cold glass cracks it." },
+    { h:"Add boiling water", t:"Pour in enough <strong>boiling water</strong> to cover everything, then stir to break up the <strong>noodles</strong> and disperse the <strong>miso</strong>." },
+    { h:"Wait", t:"Five minutes for the vermicelli to soften, then <strong>seaweed</strong> and <strong>peanuts</strong> on top.", time:"5 min" }
+  ],
+  tips:[
+    ["Room temperature before boiling water.","A cold glass jar will crack. Five minutes on the bench is enough."],
+    ["Rice vermicelli, nothing thicker.","The fine ones soften in boiling water alone. Anything thicker needs actual cooking."],
+    ["Miso at the bottom.","It dissolves as you stir. Sitting on top it stays in a lump."],
+    ["Keep the vegetables thin.","Everything is raw and only gets steeped, so slice it as thin as you can."],
+    ["Three jars on a Sunday.","The whole point. It takes half an hour to pack three days of lunches."]
+  ],
+  sheetNotes:"Layer: seasonings, then dry noodles, then vegetables. Keeps 3 days in the fridge. Let a cold glass jar come to room temperature before adding boiling water. Rice vermicelli only — anything thicker needs cooking. Slice everything thin.",
+  source:{ name:"Tasty Thrifty Timely", url:"https://tastythriftytimely.com/instant-noodle-soup-bowl-best-quick-vegan-lunch/", note:"Adapted from Tasty Thrifty Timely." }
+},
+{
+  id:"vegan-crepes", category:"Breakfast", theme:"sesame", scene:"skillet", icon:"i-flour",
+  title:"Vegan Crepes",
+  blurb:"Flour, soy milk and sparkling water. Lemon and sugar, the way they should be.",
+  kicker:"No eggs, no resting time, no blender. Sparkling water does what the eggs would — keeps them light and slightly lacy at the edges. Cook them in vegan butter rather than oil and they brown properly.",
+  tags:["Vegan","20 minutes","No rest"],
+  facts:[["5 min","MIX"],["15 min","COOK"],["1 pan","WASH-UP"]],
+  base:4, step:1, min:1, max:8,
+  servingNote:"Makes about 8 crepes, serving 4. Batter keeps a day.",
+  intro:"Sparkling water straight from the bottle — flat water works but they're denser.",
+  methodIntro:"One bowl, one whisk, one non-stick pan. No resting required.",
+  sheetMeta:"Vegan · Mix 5 min · Cook 15 min · Makes ~8",
+  groups:[
+    { name:"The batter", items:[
+      { icon:"i-flour", name:"plain flour", amt:190, unit:"g" },
+      { icon:"i-flour", name:"cornflour", amt:10, unit:"g" },
+      { icon:"i-sugar", name:"caster sugar", amt:12, unit:"g" },
+      { icon:"i-salt", name:"salt", amt:0.25, unit:"tsp" },
+      { icon:"i-oil", name:"neutral oil", amt:30, unit:"ml" },
+      { icon:"i-milk", name:"unsweetened soy milk", amt:250, unit:"ml" },
+      { icon:"i-broth", name:"sparkling water", amt:250, unit:"ml" }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-butter", name:"vegan butter, for the pan", amt:40, unit:"g" },
+      { icon:"i-lemon", name:"lemons, halved", amt:2, unit:"lemons", round:true },
+      { icon:"i-sugar", name:"icing sugar", amt:30, unit:"g" },
+      { icon:"i-berry", name:"berries", amt:0, unit:"", opt:true },
+      { icon:"i-syrup", name:"maple syrup", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Dry first", t:"Whisk the <strong>plain flour</strong>, <strong>cornflour</strong>, <strong>caster sugar</strong> and <strong>salt</strong> together in a large bowl." },
+    { h:"Wet in", t:"Add the <strong>oil</strong>, <strong>soy milk</strong> and <strong>sparkling water</strong> and whisk until completely smooth. It should be thin — closer to cream than batter." },
+    { h:"Heat the pan", t:"A medium non-stick pan over medium heat with a knob of <strong>vegan butter</strong>." },
+    { h:"Pour and swirl", t:"About 80 ml of batter into the pan, then immediately lift and rotate it so the batter runs out into a thin circle." },
+    { h:"First side", t:"Until the top looks dry and the edges lift.", time:"2 min" },
+    { h:"Flip", t:"Carefully, with a spatula, then thirty seconds on the second side. Onto a plate and repeat, buttering the pan each time.", time:"30 sec" },
+    { h:"Serve", t:"Squeeze of <strong>lemon</strong>, dust of <strong>icing sugar</strong>, rolled or folded into quarters. <strong>Berries</strong> and <strong>maple syrup</strong> if you're making a thing of it." }
+  ],
+  tips:[
+    ["Thin batter, thin crepes.","If it coats the back of a spoon it's too thick. Add a splash more sparkling water."],
+    ["Butter the pan every time.","Not oil, and not once at the start. This is where the browning and the flavour come from."],
+    ["The first one is always bad.","It is calibrating the pan temperature. Eat it standing up and move on."],
+    ["Stack them under a tea towel.","They stay warm and soft. Straight onto a cold plate and they dry at the edges."],
+    ["Batter keeps overnight.","Covered in the fridge. Whisk it before using — the flour settles."]
+  ],
+  sheetNotes:"Batter should be thin, closer to cream than pancake batter. Vegan butter in the pan every crepe, not oil. First one is always a write-off. Stack under a tea towel to keep them soft. Batter keeps overnight; whisk before using.",
+  source:{ name:"Nora Cooks", url:"https://www.noracooks.com/vegan-crepes/", note:"Adapted from Nora Taylor. Metric conversions are approximate." }
+},
+{
+  id:"vegan-carrot-cake", category:"Desserts", theme:"sesame", scene:"tray", icon:"i-carrot",
+  title:"Vegan Carrot Cake",
+  blurb:"One bowl, two tins, 330 g of grated carrot, vegan cream cheese frosting.",
+  kicker:"Apple sauce and oil replace the eggs and butter and the cake is moister for it. Heavy on cinnamon, with walnuts and sultanas if you want them. The frosting is four ingredients and needs the cake to be stone cold.",
+  tags:["Vegan","1 hour","One bowl"],
+  facts:[["20 min","PREP"],["40 min","BAKE"],["12 slices","YIELD"]],
+  base:12, step:2, min:8, max:24,
+  servingNote:"Two 20 cm layers, 12 slices. Keeps 4 days refrigerated.",
+  intro:"Grate the carrots finely — coarse shreds stay stringy in the finished cake.",
+  methodIntro:"Oven at 175°C. Dry ingredients, wet ingredients, fold, divide, bake.",
+  sheetMeta:"Vegan · Prep 20 min · Bake 175°C, 35–45 min · 12 slices",
+  groups:[
+    { name:"Dry", items:[
+      { icon:"i-flour", name:"plain flour", amt:310, unit:"g" },
+      { icon:"i-sugar", name:"brown sugar", amt:200, unit:"g" },
+      { icon:"i-sugar", name:"caster sugar", amt:200, unit:"g" },
+      { icon:"i-leaven", name:"baking powder", amt:2, unit:"tsp" },
+      { icon:"i-leaven", name:"bicarb soda", amt:1, unit:"tsp" },
+      { icon:"i-spice", name:"ground cinnamon", amt:2, unit:"tsp" },
+      { icon:"i-ginger", name:"ground ginger", amt:0.5, unit:"tsp" },
+      { icon:"i-spice", name:"ground nutmeg", amt:0.25, unit:"tsp" },
+      { icon:"i-salt", name:"salt", amt:1, unit:"tsp" }
+    ]},
+    { name:"Wet", items:[
+      { icon:"i-oil", name:"canola or neutral oil", amt:120, unit:"ml" },
+      { icon:"i-peach", name:"apple sauce or crushed pineapple", amt:250, unit:"g" },
+      { icon:"i-milk", name:"almond milk", amt:180, unit:"ml" },
+      { icon:"i-vanilla", name:"vanilla extract", amt:15, unit:"ml" },
+      { icon:"i-carrot", name:"carrot, finely grated", amt:330, unit:"g" },
+      { icon:"i-nuts", name:"walnuts, chopped", amt:110, unit:"g", opt:true },
+      { icon:"i-berry", name:"sultanas", amt:75, unit:"g", opt:true }
+    ]},
+    { name:"Cream cheese frosting", items:[
+      { icon:"i-butter", name:"vegan butter, softened", amt:115, unit:"g" },
+      { icon:"i-cheese", name:"vegan cream cheese", amt:225, unit:"g" },
+      { icon:"i-vanilla", name:"vanilla extract", amt:5, unit:"ml" },
+      { icon:"i-sugar", name:"icing sugar", amt:480, unit:"g" }
+    ]}
+  ],
+  steps:[
+    { h:"Oven and tins", t:"175°C. Two 20 cm round tins lined with baking paper and greased well.", time:"10 min" },
+    { h:"Dry in one bowl", t:"Whisk the <strong>plain flour</strong>, both <strong>sugars</strong>, <strong>baking powder</strong>, <strong>bicarb soda</strong>, <strong>cinnamon</strong>, <strong>ginger</strong>, <strong>nutmeg</strong> and <strong>salt</strong> together." },
+    { h:"Wet into the same bowl", t:"Pour in the <strong>oil</strong>, <strong>apple sauce</strong>, <strong>almond milk</strong> and <strong>vanilla</strong> and mix until just combined." },
+    { h:"Fold in the carrot", t:"Gently fold through the grated <strong>carrot</strong>, <strong>walnuts</strong> and <strong>sultanas</strong>. Stop as soon as it's mixed." },
+    { h:"Bake", t:"Divide between the tins and bake until a skewer comes out clean and the tops are set.", time:"35–45 min" },
+    { h:"Cool completely", t:"Twenty minutes in the tins, then out onto a rack until stone cold. Frosting a warm cake is how you get soup.", time:"1 hr+" },
+    { h:"Make the frosting", t:"Beat the <strong>vegan butter</strong> smooth, add the drained <strong>vegan cream cheese</strong> and beat only until combined — over-beating makes it runny. Beat in the <strong>vanilla</strong>, then the <strong>icing sugar</strong> a cup at a time." },
+    { h:"Frost and chill", t:"Stack and frost, then into the fridge until serving." }
+  ],
+  tips:[
+    ["Don't over-beat the frosting.","Vegan cream cheese loosens rather than stiffens when you beat it. Thirty seconds once it's in, no more."],
+    ["If the frosting is runny, freeze it.","Fifteen minutes in the freezer, stir, another fifteen if needed. It firms up."],
+    ["Grate the carrots finely.","The fine side of a box grater. Coarse shreds stay chewy and stringy."],
+    ["Apple sauce or pineapple.","Both work. Crushed pineapple gives a moister, slightly tangier cake."],
+    ["Keep it in the fridge.","The frosting needs it. Take slices out twenty minutes before eating."]
+  ],
+  sheetNotes:"Grate the carrots on the fine side of the grater. Cake must be stone cold before frosting. Don't over-beat the vegan cream cheese — it loosens. Runny frosting: 15 min in the freezer, stir, repeat. Keeps 4 days refrigerated.",
+  source:{ name:"Nora Cooks", url:"https://www.noracooks.com/vegan-carrot-cake/", note:"Adapted from Nora Taylor, with her vegan cream cheese frosting. Metric conversions are approximate." }
+},
+{
+  id:"chocolate-self-saucing-mug-cake", category:"Desserts", theme:"spice", scene:"bowl", icon:"i-chocolate",
+  title:"Chocolate Self-Saucing", title2:"Mug Cake",
+  blurb:"Ninety seconds in the microwave and there's sauce at the bottom. Serves one.",
+  kicker:"The brown sugar and cocoa sprinkled on top sink through as it cooks and become a sauce under the cake. It works because of the boiling water poured over the back of a spoon at the end — pour it straight in and you'll stir it into the batter.",
+  tags:["Vegetarian","5 minutes","Microwave"],
+  facts:[["3 min","MIX"],["80 sec","COOK"],["1 mug","WASH-UP"]],
+  base:1, step:1, min:1, max:4,
+  servingNote:"One large mug or dessert bowl. Eat it immediately.",
+  intro:"Use a mug much bigger than you think you need — it climbs.",
+  methodIntro:"Mix in a small bowl, transfer to the mug, top, water, microwave.",
+  sheetMeta:"Vegetarian · Mix 3 min · Microwave 80 sec · Serves 1",
+  groups:[
+    { name:"The cake", items:[
+      { icon:"i-flour", name:"plain flour", amt:25, unit:"g" },
+      { icon:"i-sugar", name:"caster sugar", amt:40, unit:"g" },
+      { icon:"i-chocolate", name:"cocoa powder", amt:10, unit:"g" },
+      { icon:"i-leaven", name:"baking powder", amt:0.5, unit:"tsp" },
+      { icon:"i-salt", name:"salt", amt:0, unit:"" },
+      { icon:"i-milk", name:"milk", amt:45, unit:"ml" },
+      { icon:"i-oil", name:"oil or melted butter", amt:37, unit:"ml" },
+      { icon:"i-vanilla", name:"vanilla essence", amt:0.25, unit:"tsp" }
+    ]},
+    { name:"The sauce", items:[
+      { icon:"i-sugar", name:"brown sugar", amt:20, unit:"g" },
+      { icon:"i-chocolate", name:"cocoa powder", amt:3, unit:"g" },
+      { icon:"i-broth", name:"boiling water", amt:45, unit:"ml" }
+    ]}
+  ],
+  steps:[
+    { h:"Kettle on", t:"Boil the kettle and grease an oversized microwave-safe mug or dessert bowl." },
+    { h:"Mix the dry", t:"In a small bowl, stir the <strong>plain flour</strong>, <strong>caster sugar</strong>, <strong>cocoa powder</strong>, <strong>baking powder</strong> and <strong>salt</strong> together." },
+    { h:"Add the wet", t:"Stir in the <strong>milk</strong>, <strong>oil</strong> and <strong>vanilla</strong> until smooth." },
+    { h:"Into the mug", t:"Scrape all the batter into the greased mug. It needs plenty of headroom to rise." },
+    { h:"Top it", t:"Sprinkle the <strong>brown sugar</strong> and the second measure of <strong>cocoa powder</strong> evenly over the surface. Don't stir it in." },
+    { h:"Water over a spoon", t:"Hold a spoon upside down over the mug and pour the <strong>boiling water</strong> onto its back so it lands gently and doesn't disturb the layers." },
+    { h:"Microwave", t:"Eighty seconds, until it has risen and springs back when touched. Microwaves vary — check at seventy.", time:"80 sec" },
+    { h:"Serve", t:"Carefully, it's extremely hot. Ice cream or cream on top." }
+  ],
+  tips:[
+    ["The spoon is not optional.","Poured straight in, the water ploughs through the batter and you get a wet cake and no sauce."],
+    ["Bigger mug than you think.","It roughly doubles. A standard mug overflows in the microwave and you'll be cleaning it out."],
+    ["Don't overcook it.","Ten seconds too long turns it rubbery and dries up the sauce. Check early."],
+    ["Make it vegan.","Any plant milk and oil instead of butter. Nothing else needs changing."],
+    ["Make two, cook one at a time.","Two mugs in the microwave together cook unevenly. Ninety seconds each."]
+  ],
+  sheetNotes:"Oversized mug — it doubles. Sprinkle the brown sugar and cocoa on top without stirring. Pour the boiling water over the back of a spoon so the layers stay intact. 80 seconds, check at 70. Vegan: plant milk and oil. Eat immediately.",
+  source:{ name:"Just A Mum", url:"https://justamumnz.com/2019/04/19/the-best-chocolate-self-saucing-mug-cake-ever/", note:"Adapted from Just A Mum. Metric conversions are approximate." }
+}
 ];
 
 /* ============================================================
@@ -2105,9 +2828,49 @@ function catsInOrder(){
 const inCat = c => RECIPES.filter(r => r.category === c)
   .sort((a,b) => fullTitle(a).localeCompare(fullTitle(b)));
 
+/* ---- favourites: stored in this browser only ---- */
+const FAV_KEY = "recipebox.favourites";
+let favMem = null;
+function favList(){
+  if (favMem) return favMem;
+  try { favMem = JSON.parse(localStorage.getItem(FAV_KEY)) || []; }
+  catch(e){ favMem = []; }
+  if (!Array.isArray(favMem)) favMem = [];
+  return favMem;
+}
+const isFav = id => favList().indexOf(id) !== -1;
+function toggleFav(id){
+  const l = favList(), i = l.indexOf(id);
+  if (i === -1) l.push(id); else l.splice(i,1);
+  try { localStorage.setItem(FAV_KEY, JSON.stringify(l)); } catch(e){}
+  return isFav(id);
+}
+const favRecipes = () => favList()
+  .map(id => RECIPES.find(r => r.id === id)).filter(Boolean)
+  .sort((a,b) => fullTitle(a).localeCompare(fullTitle(b)));
+
+function favButton(id, big){
+  const on = isFav(id);
+  return `<button type="button" class="fav${big ? " big" : ""}" data-fav="${id}" aria-pressed="${on}"
+    aria-label="${on ? "Remove from favourites" : "Add to favourites"}"
+    title="${on ? "Remove from favourites" : "Add to favourites"}">${on ? "★" : "☆"}${big ? (on ? " Favourite" : " Favourite") : ""}</button>`;
+}
+
+function tile(r){
+  const t = THEMES[r.theme];
+  return `<div class="tilewrap" style="${themeVars(t)}">
+    <a class="tile" href="#/${r.id}" title="${r.blurb.replace(/"/g,"&quot;")}">
+      <div class="top"><svg class="thumb" viewBox="0 0 400 258" aria-hidden="true">${SCENE[r.scene](t)}</svg></div>
+      <div class="body"><h3>${fullTitle(r)}</h3><span class="chip">${r.tags[1] || r.tags[0]}</span></div>
+    </a>
+    ${favButton(r.id)}
+  </div>`;
+}
+
 function renderIndex(){
   document.body.classList.remove("show-sheet");
   const cats = catsInOrder();
+  const favs = favRecipes();
   app.innerHTML = `
     <div class="bar">
       <span class="brand"><svg viewBox="0 0 32 32"><use href="#i-pot"/></svg> The Recipe Box</span>
@@ -2118,9 +2881,14 @@ function renderIndex(){
       <p>Everything worth cooking twice, stripped of the life story and the ads. Tap a tile, scale the servings, print an A4 sheet for the fridge.</p>
     </div>
     <div class="home">
-      <details class="side">
+      <details class="side"${window.matchMedia("(min-width:900px)").matches ? " open" : ""}>
         <summary>Find a recipe</summary>
-        <div class="sidebody">${cats.map(c => {
+        <div class="sidebody">
+        ${favs.length ? `<details class="sidegroup" open>
+            <summary>★ Favourites <small>${favs.length}</small></summary>
+            <ul class="sidelist">${favs.map(r => `<li><a href="#/${r.id}">${fullTitle(r)}</a></li>`).join("")}</ul>
+          </details>` : ""}
+        ${cats.map(c => {
           const list = inCat(c);
           return `<details class="sidegroup" open>
             <summary>${c} <small>${list.length}</small></summary>
@@ -2128,15 +2896,16 @@ function renderIndex(){
           </details>`;
         }).join("")}</div>
       </details>
-      <div>${cats.map(c => `
+      <div>
+        ${favs.length ? `
+        <p class="cat fav-cat" id="cat-favourites">★ Favourites</p>
+        <div class="grid">${favs.map(tile).join("")}</div>` : `
+        <p class="cat">Favourites</p>
+        <p class="favhint">Tap the ☆ on any recipe to pin it here. Saved in this browser.</p>`}
+        ${cats.map(c => `
         <p class="cat" id="cat-${slugify(c)}">${c}</p>
-        <div class="grid">${inCat(c).map(r => {
-          const t = THEMES[r.theme];
-          return `<a class="tile" href="#/${r.id}" title="${r.blurb.replace(/"/g,"&quot;")}" style="${themeVars(t)}">
-            <div class="top"><svg class="thumb" viewBox="0 0 400 258" aria-hidden="true">${SCENE[r.scene](t)}</svg></div>
-            <div class="body"><h3>${fullTitle(r)}</h3><span class="chip">${r.tags[1] || r.tags[0]}</span></div>
-          </a>`;
-        }).join("")}</div>`).join("")}</div>
+        <div class="grid">${inCat(c).map(tile).join("")}</div>`).join("")}
+      </div>
     </div>
   `;
   window.scrollTo(0,0);
@@ -2148,7 +2917,7 @@ function renderRecipe(r){
   app.innerHTML = `
     <div class="bar" style="${themeVars(t)}">
       <a class="brand" href="#/"><svg viewBox="0 0 32 32"><use href="#${r.icon}"/></svg> ← All recipes</a>
-      <button class="btn" id="toSheet">A4 print sheet</button>
+      <span style="display:flex;gap:8px">${favButton(r.id, true)}<button class="btn" id="toSheet">A4 print sheet</button></span>
     </div>
 
     <article class="card" style="${themeVars(t)}">
@@ -2254,6 +3023,24 @@ function route(){
   document.body.classList.remove("show-sheet");
   if (r) renderRecipe(r); else renderIndex();
 }
+app.addEventListener("click", e => {
+  const b = e.target.closest("[data-fav]");
+  if (!b) return;
+  e.preventDefault();
+  const id = b.getAttribute("data-fav");
+  const on = toggleFav(id);
+  const current = (location.hash || "#/").replace(/^#\/?/, "").replace(/\/$/, "");
+  if (current === id){
+    b.setAttribute("aria-pressed", on);
+    b.setAttribute("aria-label", on ? "Remove from favourites" : "Add to favourites");
+    b.textContent = (on ? "\u2605" : "\u2606") + " Favourite";
+  } else {
+    const y = window.scrollY;
+    renderIndex();
+    window.scrollTo(0, y);
+  }
+});
+
 window.addEventListener("hashchange", route);
 route();
 </script>
