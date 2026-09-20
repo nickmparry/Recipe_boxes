@@ -490,13 +490,25 @@ const RECIPES = [
   blurb:"Broccoli, capsicum, spinach and black beans rolled up under red sauce and cheese.",
   kicker:"Not the quickest dinner, but worth the effort: sautéed capsicum, broccoli and spinach with black beans, rolled into tortillas, drowned in red sauce and baked until golden. Leftovers are lunch.",
   tags:["Vegetarian","Freezer-friendly","Makes 8"],
-  facts:[["15 min","PREP"],["45 min","COOK"],["200°C","OVEN"]],
+  facts:[["20 min","PREP"],["50 min","COOK"],["200°C","OVEN"]],
   base:4, step:2, min:2, max:8,
   servingNote:"Base recipe makes 8 enchiladas in a 33 × 23 cm dish",
-  intro:"Make or open the enchilada sauce first — everything else moves fast once the pan is hot.",
-  methodIntro:"Filling, roll, sauce, bake. Rest before serving or you'll burn your mouth.",
-  sheetMeta:"Vegetarian · Prep 15 min · Bake 20–26 min at 200 °C · 33 × 23 cm dish",
+  intro:"The sauce takes ten minutes and is worth making — everything else moves fast once the pan is hot.",
+  methodIntro:"Sauce, filling, roll, bake. Rest before serving or you'll burn your mouth.",
+  sheetMeta:"Vegetarian · Prep 20 min · Bake 20–26 min at 200 °C · 33 × 23 cm dish",
   groups:[
+    { name:"Enchilada sauce (makes 500 ml)", items:[
+      { icon:"i-oil", name:"olive oil", amt:45, unit:"ml" },
+      { icon:"i-flour", name:"plain flour", amt:25, unit:"g" },
+      { icon:"i-chilli", name:"chilli powder", amt:8, unit:"g" },
+      { icon:"i-spice", name:"ground cumin", amt:1, unit:"tsp" },
+      { icon:"i-garlic", name:"garlic powder", amt:0.5, unit:"tsp" },
+      { icon:"i-herb", name:"dried oregano", amt:0.25, unit:"tsp" },
+      { icon:"i-spice", name:"ground cinnamon", amt:0, unit:"" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" },
+      { icon:"i-sauce", name:"tomato paste", amt:35, unit:"g" },
+      { icon:"i-broth", name:"vegetable stock", amt:500, unit:"ml" },
+      { icon:"i-vinegar", name:"apple cider vinegar", amt:5, unit:"ml" }]},
     { name:"The filling", items:[
       { icon:"i-oil", name:"olive oil", amt:2, unit:"tbsp" },
       { icon:"i-onion", name:"red onion, chopped", amt:150, unit:"g" },
@@ -508,12 +520,13 @@ const RECIPES = [
       { icon:"i-spice", name:"ground cinnamon", amt:0.25, unit:"tsp" },
       { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }]},
     { name:"To assemble", items:[
-      { icon:"i-sauce", name:"red enchilada sauce", amt:500, unit:"ml" },
+      { icon:"i-sauce", name:"enchilada sauce, from above or bought", amt:500, unit:"ml" },
       { icon:"i-tortilla", name:"wholemeal tortillas, 20 cm", amt:8, unit:"tortillas", round:true },
       { icon:"i-cheese", name:"grated tasty or Monterey Jack", amt:120, unit:"g" },
       { icon:"i-herb", name:"coriander, chopped, to finish", amt:0, unit:"", opt:true }]}
   ],
   steps:[
+    { h:"Make the sauce", t:"Mix the <strong>plain flour</strong>, <strong>chilli powder</strong>, <strong>cumin</strong>, <strong>garlic powder</strong>, <strong>oregano</strong>, <strong>salt</strong> and a pinch of <strong>cinnamon</strong> in a small bowl. Warm the <strong>olive oil</strong> in a pot over medium until a pinch of the mixture sizzles, tip it all in and whisk for a minute until it darkens, then whisk in the <strong>tomato paste</strong> and pour the <strong>vegetable stock</strong> in slowly, whisking out the lumps. Simmer until it thickens enough to resist the spoon, then take it off the heat and whisk in the <strong>apple cider vinegar</strong> and plenty of <strong>black pepper</strong>.", time:"10 min" },
     { h:"Heat the oven", t:"Heat the oven to 200 °C (180 °C fan), one rack in the middle and one in the upper third. Grease a 33 × 23 cm baking dish with a little <strong>olive oil</strong>." },
     { h:"Soften the vegetables", t:"Warm the <strong>olive oil</strong> in a large frying pan over medium. Cook the <strong>red onion</strong> with a pinch of <strong>salt</strong> until soft and translucent, then add the <strong>broccoli</strong> and <strong>capsicum</strong>, drop the heat to medium-low, cover and cook until the broccoli is bright green and just catching gold at the edges.", time:"13–16 min" },
     { h:"Spices, then greens", t:"Stir in the <strong>cumin</strong> and <strong>cinnamon</strong> until fragrant, about 30 seconds. Add the <strong>baby spinach</strong> a few handfuls at a time, stirring until each lot wilts." },
@@ -527,10 +540,10 @@ const RECIPES = [
     ["Corn tortillas work.","You'll need about 12 rather than 8, and warm them first or they'll crack when you roll."],
     ["Make it vegan.","Skip the cheese entirely and top with sliced avocado or a drizzle of cashew cream."],
     ["Freeze before baking.","Assemble, chill until cold, then cover tightly and freeze up to six months. Bake from frozen, covered with foil, about 45 minutes."],
-    ["Extra cheesy.","Double the cheese if that's your idea of a good time — 240 g total."]
+    ["The sauce keeps.","Five days in the fridge, three months frozen. Make a double batch — it is better than anything in a jar and takes ten minutes."]
   ],
-  sheetNotes:"Cinnamon is small but essential. Corn tortillas: use about 12 and warm them first. Vegan: skip cheese, top with avocado. Assemble and freeze unbaked for up to 6 months; bake from frozen, covered, about 45 min. Leftovers keep 4 days.",
-  source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/vegetarian-enchiladas-recipe/", note:"Adapted from Kathryne Taylor. Metric conversions are approximate." }
+  sheetNotes:"Sauce: toast the flour and spices in oil for a full minute before the stock goes in, and add the vinegar off the heat. It keeps 5 days, or 3 months frozen. Cinnamon in the filling is small but essential. Corn tortillas: use about 12 and warm them first. Vegan: skip cheese, top with avocado. Assemble and freeze unbaked for up to 6 months; bake from frozen, covered, about 45 min.",
+  source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/vegetarian-enchiladas-recipe/", note:"Adapted from Kathryne Taylor, with her <a href=\"https://cookieandkate.com/enchilada-sauce-recipe/\">homemade enchilada sauce</a>. Metric conversions are approximate." }
 }
 ,
 {
@@ -2786,6 +2799,56 @@ const RECIPES = [
   ],
   sheetNotes:"Oversized mug — it doubles. Sprinkle the brown sugar and cocoa on top without stirring. Pour the boiling water over the back of a spoon so the layers stay intact. 80 seconds, check at 70. Vegan: plant milk and oil. Eat immediately.",
   source:{ name:"Just A Mum", url:"https://justamumnz.com/2019/04/19/the-best-chocolate-self-saucing-mug-cake-ever/", note:"Adapted from Just A Mum. Metric conversions are approximate." }
+}
+,
+{
+  id:"fluffiest-vegan-pancakes", category:"Breakfast", theme:"sesame", scene:"skillet", icon:"i-flour",
+  title:"The Fluffiest", title2:"Vegan Pancakes",
+  blurb:"Seven ingredients, one bowl, no egg. The vinegar is what makes them rise.",
+  kicker:"Cider vinegar curdles the plant milk into buttermilk, and the acid reacting with a full tablespoon of baking powder is what does the lifting an egg would. Five minutes of resting before they hit the pan is the other half of it.",
+  tags:["Vegan","20 minutes","One bowl"],
+  facts:[["5 min","MIX"],["5 min","REST"],["10 min","COOK"]],
+  base:4, step:2, min:2, max:8,
+  servingNote:"Makes about 4 large pancakes or 8 small. Best straight from the pan.",
+  intro:"Any plant milk works — soy and oat give the richest result.",
+  methodIntro:"Dry bowl, wet jug, combine, rest. Medium heat and one flip.",
+  sheetMeta:"Vegan · Mix 5 min · Rest 5 min · Cook 10 min · Makes ~4",
+  groups:[
+    { name:"Dry", items:[
+      { icon:"i-flour", name:"plain flour", amt:125, unit:"g" },
+      { icon:"i-sugar", name:"caster sugar", amt:25, unit:"g" },
+      { icon:"i-leaven", name:"baking powder", amt:1, unit:"tbsp" },
+      { icon:"i-salt", name:"salt", amt:0.5, unit:"tsp" }
+    ]},
+    { name:"Wet", items:[
+      { icon:"i-milk", name:"plant milk", amt:240, unit:"ml" },
+      { icon:"i-vinegar", name:"apple cider vinegar", amt:15, unit:"ml" },
+      { icon:"i-vanilla", name:"vanilla extract", amt:5, unit:"ml" }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-syrup", name:"maple syrup", amt:0, unit:"" },
+      { icon:"i-butter", name:"vegan butter, for the pan", amt:0, unit:"" },
+      { icon:"i-berry", name:"berries", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Dry in a bowl", t:"Whisk the <strong>plain flour</strong>, <strong>caster sugar</strong>, <strong>baking powder</strong> and <strong>salt</strong> together." },
+    { h:"Wet in a jug", t:"Stir the <strong>plant milk</strong>, <strong>apple cider vinegar</strong> and <strong>vanilla</strong> together. It will look slightly curdled within a minute — that's the point." },
+    { h:"Combine", t:"Pour the wet into the dry and whisk until just smooth. A few small lumps are fine; a smooth, over-beaten batter gives flat pancakes." },
+    { h:"Rest it", t:"Five minutes on the bench. The flour hydrates and the baking powder gets going, and the batter visibly thickens.", time:"5 min" },
+    { h:"Cook", t:"A non-stick pan over medium with a little <strong>vegan butter</strong>. About 65 g of batter per pancake — pour and leave it alone.", time:"2–3 min" },
+    { h:"One flip", t:"When bubbles come up through the surface and hold their shape, flip once and cook until golden on the other side.", time:"1–2 min" },
+    { h:"Serve", t:"Straight from the pan with <strong>maple syrup</strong> and <strong>berries</strong>." }
+  ],
+  tips:[
+    ["The vinegar is not optional.","It curdles the milk into buttermilk and reacts with the baking powder. Without it they're flat and floury."],
+    ["A full tablespoon of baking powder.","It looks like far too much. It's what makes them fluffy rather than dense, and you don't taste it."],
+    ["Don't overmix.","Lumps are fine. Beating the batter smooth develops gluten and you get rubber."],
+    ["Medium heat, not high.","High heat browns the outside before the middle sets. If the first one scorches, turn it down."],
+    ["Batter doesn't keep.","The raising reaction starts the moment the vinegar goes in. Mix it when you want to eat."]
+  ],
+  sheetNotes:"Cider vinegar plus plant milk makes the buttermilk that reacts with the baking powder — don't skip it. A full tablespoon of baking powder is correct. Whisk until just smooth; lumps are fine. Rest 5 min. Medium heat, one flip when the bubbles hold. Batter doesn't keep.",
+  source:{ name:"Tasty", url:"https://tasty.co/recipe/the-fluffiest-vegan-pancakes", note:"Adapted from Tasty. Metric conversions are approximate." }
 }
 ];
 
