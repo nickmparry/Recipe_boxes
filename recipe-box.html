@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Recipe Box</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE RECIPE BOX — single-file recipe collection
+   To add a recipe: append one object to the RECIPES array at the
+   bottom of this file. Nothing else needs to change.
+   ============================================================ */
+:root{
+  --ink:#241205;
+  --cream:#FFF1D4;
+  --paper:#FFFDF6;
+  --bg:#22102C;
+  --muted:#6B5340;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#150720; } }
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%;
+}
+img,svg{max-width:100%}
+a{color:inherit}
+.wrap{max-width:880px;margin:0 auto;padding:18px 14px 64px}
+
+/* ---------- top bar ---------- */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;color:var(--cream);font-weight:800;font-size:15px;text-decoration:none}
+.brand svg{width:26px;height:26px;flex:none}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;background:var(--pop,#F5B301);color:var(--ink);
+  text-decoration:none;font-weight:800;font-size:14px;padding:9px 14px;border-radius:999px;
+  border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);cursor:pointer;font-family:inherit;
+}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #F5B301;outline-offset:3px}
+
+/* ---------- index ---------- */
+.masthead{margin:8px 0 26px}
+.masthead h1{
+  font-family:"Bricolage Grotesque","Figtree",sans-serif;font-weight:800;letter-spacing:-.03em;
+  font-size:clamp(40px,12vw,72px);line-height:.9;margin:0 0 8px;color:var(--cream);
+}
+.masthead p{margin:0;color:#C9B0D6;font-size:16px;max-width:44ch}
+.cat{font-family:"Bricolage Grotesque",sans-serif;font-size:14px;letter-spacing:.14em;text-transform:uppercase;
+  color:#C9B0D6;margin:28px 0 12px;display:flex;align-items:center;gap:10px}
+.cat::after{content:"";flex:1;height:2px;background:rgba(255,241,212,.2)}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:620px){.grid{grid-template-columns:1fr 1fr}}
+.tile{
+  display:block;text-decoration:none;background:var(--paper);border:3px solid var(--ink);
+  border-radius:20px;overflow:hidden;color:var(--ink);
+}
+.tile .top{background:var(--accent);padding:14px 16px 0;display:flex;gap:12px;align-items:flex-end}
+.tile .top h3{font-family:"Bricolage Grotesque",sans-serif;font-size:22px;line-height:1.05;margin:0 0 12px;color:var(--cream);letter-spacing:-.02em;flex:1}
+.tile .thumb{width:92px;flex:none;margin-bottom:-4px}
+.tile .meta{padding:11px 16px 13px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{background:var(--cream);border:2px solid var(--ink);border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:800}
+.tile .blurb{padding:0 16px 14px;font-size:13.5px;color:var(--muted);margin:0}
+
+/* ---------- card ---------- */
+.card{background:var(--paper);border-radius:26px;overflow:hidden;border:3px solid var(--ink)}
+.hero{background:var(--accent);padding:22px 20px 0}
+.hero .tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.tag{background:var(--pop);color:var(--ink);font-weight:800;font-size:12px;padding:5px 11px;border-radius:999px;border:2px solid var(--ink)}
+.tag.pale{background:var(--cream)}
+.card h1{
+  font-family:"Bricolage Grotesque","Figtree",sans-serif;font-weight:800;
+  font-size:clamp(32px,9.5vw,54px);line-height:.95;margin:0 0 10px;color:var(--cream);letter-spacing:-.025em;
+}
+.kicker{color:rgba(255,241,212,.88);font-weight:600;font-size:15px;margin:0 0 18px;max-width:46ch}
+.scene{display:block;margin:0 auto;width:min(360px,88%)}
+
+.facts{display:grid;grid-template-columns:repeat(4,1fr);background:var(--ink);color:var(--cream);text-align:center}
+.fact{padding:12px 4px;border-left:1px solid rgba(255,241,212,.25)}
+.fact:first-child{border-left:0}
+.fact b{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:19px;line-height:1.1}
+.fact span{font-size:11px;opacity:.8;font-weight:600}
+
+.section{padding:24px 20px}
+.section + .section{border-top:3px dashed rgba(36,18,5,.18)}
+h2{font-family:"Bricolage Grotesque","Figtree",sans-serif;font-size:27px;margin:0 0 4px;letter-spacing:-.02em}
+.sub{margin:0 0 18px;font-size:14px;color:var(--muted)}
+
+.servings{display:flex;align-items:center;gap:12px;background:var(--cream);border:2px solid var(--ink);border-radius:16px;padding:10px 14px;margin-bottom:20px}
+.servings p{margin:0;font-weight:800;font-size:14px;flex:1}
+.servings small{display:block;font-weight:600;color:var(--muted);font-size:12px}
+.stepper{display:flex;align-items:center;gap:4px}
+.stepper button{width:34px;height:34px;border-radius:10px;border:2px solid var(--ink);background:var(--pop);color:var(--ink);font-size:20px;font-weight:800;line-height:1;cursor:pointer;font-family:inherit}
+.stepper button[disabled]{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:2.4ch;text-align:center;font-family:"Bricolage Grotesque",sans-serif;font-size:22px;font-weight:800}
+
+.grouptitle{font-weight:800;font-size:13px;color:var(--accent);margin:18px 0 8px}
+.grouptitle:first-of-type{margin-top:0}
+ul.ings{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:1fr}
+@media(min-width:620px){ul.ings{grid-template-columns:1fr 1fr}}
+.ing{display:flex;align-items:center;gap:11px;background:var(--cream);border:2px solid var(--ink);border-radius:14px;padding:8px 12px}
+.ing .pic{width:40px;height:40px;flex:none;border-radius:10px;background:var(--paper);border:2px solid var(--ink);display:grid;place-items:center}
+.ing .pic svg{width:26px;height:26px}
+.ing .txt{font-size:14px;line-height:1.25}
+.ing .amt{font-weight:800;display:block;font-size:15px}
+.ing .opt{color:var(--muted);font-weight:600}
+
+ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:grid;gap:14px}
+ol.steps li{counter-increment:s;display:flex;gap:13px;align-items:flex-start}
+ol.steps li::before{
+  content:counter(s);flex:none;width:38px;height:38px;border-radius:12px;
+  background:var(--deep);color:var(--cream);border:2px solid var(--ink);
+  display:grid;place-items:center;font-family:"Bricolage Grotesque",sans-serif;font-size:19px;font-weight:800;
+}
+ol.steps li:nth-child(3n+2)::before{background:var(--pop);color:var(--ink)}
+ol.steps li:nth-child(3n+3)::before{background:var(--accent);color:var(--cream)}
+.step h3{margin:6px 0 3px;font-size:16px;font-weight:800}
+.step p{margin:0;font-size:15px;color:#3A2512}
+.step p strong{font-weight:800;color:var(--accent)}
+.time{display:inline-block;margin-top:6px;background:var(--pop);border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800}
+
+.tips{background:var(--deep);color:var(--cream)}
+.tips h2{color:var(--pop)}
+.tips .sub{color:rgba(255,241,212,.75)}
+.tips ul{margin:0;padding-left:20px;display:grid;gap:9px;font-size:15px}
+.tips b{color:var(--pop)}
+.foot{padding:16px 20px;background:var(--ink);color:#D8C4AC;font-size:12px}
+.foot a{color:var(--pop)}
+
+/* ---------- A4 sheet ---------- */
+.sheet{display:none;background:var(--paper);color:var(--ink);border-radius:8px;padding:14mm;border:3px solid var(--ink)}
+body.show-sheet .sheet{display:block}
+body.show-sheet .card{display:none}
+.sheet-h{border-bottom:4px solid var(--accent);padding-bottom:8px;margin-bottom:12px}
+.sheet-h h2{font-size:30px;margin:0;color:var(--accent)}
+.sheet-h p{margin:4px 0 0;font-size:12px;font-weight:600}
+.sheet-cols{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:700px){.sheet-cols{grid-template-columns:34% 1fr}}
+.sheet-cols h3{font-family:"Bricolage Grotesque",sans-serif;font-size:16px;margin:0 0 6px}
+.sheet-list{list-style:none;margin:0 0 12px;padding:0;font-size:12px;line-height:1.55}
+.sheet-list li{padding:2px 0;border-bottom:1px dotted #C9B69C}
+.sheet-steps{margin:0;padding-left:18px;font-size:12px;line-height:1.5;display:grid;gap:7px}
+.sheet-steps b{display:block}
+.sheet-steps strong{font-weight:700}
+.backlink{margin-top:14px;display:inline-block;font-weight:800;font-size:13px;color:var(--accent);cursor:pointer}
+
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;font-size:10.5pt;padding:0}
+  .wrap{padding:0;max-width:none}
+  .bar,.card,.backlink,.btn,.masthead,.grid,.cat{display:none !important}
+  .sheet{display:block !important;border:0;padding:0;border-radius:0}
+  .sheet-cols{grid-template-columns:34% 1fr;gap:10mm}
+  .sheet-list,.sheet-steps{font-size:9.5pt}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     ICON LIBRARY — reuse these ids in recipe ingredient lists.
+     Add new symbols here only when nothing existing fits.
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-lentil" viewBox="0 0 32 32"><path d="M4 17h24c0 7-5 11-12 11S4 24 4 17z" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><circle cx="11" cy="14" r="3" fill="#E8733A" stroke="#241205" stroke-width="1.5"/><circle cx="18" cy="12" r="3" fill="#F09455" stroke="#241205" stroke-width="1.5"/><circle cx="24" cy="14" r="3" fill="#E8733A" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-carrot" viewBox="0 0 32 32"><path d="M12 12l12 12-8 4-8-8z" fill="#F07C1E" stroke="#241205" stroke-width="2"/><path d="M13 11c-1-4 2-7 5-7 0 3-1 6-5 7zM14 10c3-2 7-1 8 2-3 1-6 1-8-2z" fill="#3FA34D" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-capsicum" viewBox="0 0 32 32"><path d="M8 17c0-5 4-8 8-8s8 3 8 8-3 11-8 11-8-6-8-11z" fill="#D92B3A" stroke="#241205" stroke-width="2"/><path d="M16 9V5M12 6h8" stroke="#3FA34D" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-onion" viewBox="0 0 32 32"><path d="M16 9c7 4 9 9 9 12 0 5-4 8-9 8s-9-3-9-8c0-3 2-8 9-12z" fill="#E8C6D8" stroke="#241205" stroke-width="2"/><path d="M16 12v16M11 15c-1 5 0 10 2 13M21 15c1 5 0 10-2 13" stroke="#B57FA0" stroke-width="1.6" fill="none"/><path d="M16 9l-2-5M16 9l3-4" stroke="#3FA34D" stroke-width="2"/></symbol>
+  <symbol id="i-garlic" viewBox="0 0 32 32"><path d="M16 7c5 6 8 10 8 14 0 4-4 7-8 7s-8-3-8-7c0-4 3-8 8-14z" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><path d="M16 11v16" stroke="#C9B69C" stroke-width="1.8"/><path d="M16 7l-1-4M16 7l2-3" stroke="#3FA34D" stroke-width="2"/></symbol>
+  <symbol id="i-ginger" viewBox="0 0 32 32"><path d="M6 20c2-5 7-4 9-7s8-4 10 0-2 7-6 8-4 5-8 5-7-2-5-6z" fill="#E8B86D" stroke="#241205" stroke-width="2"/><path d="M14 15c2 2 4 3 7 3" stroke="#B98B42" stroke-width="1.6"/></symbol>
+  <symbol id="i-oil" viewBox="0 0 32 32"><path d="M12 12h8v16h-8z" fill="#F5B301" stroke="#241205" stroke-width="2"/><rect x="14" y="5" width="4" height="7" fill="#3FA34D" stroke="#241205" stroke-width="2"/><path d="M14 19h4" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-broth" viewBox="0 0 32 32"><path d="M5 14h22v7c0 4-5 7-11 7S5 25 5 21z" fill="#E8B86D" stroke="#241205" stroke-width="2"/><path d="M27 16h3v4h-3" fill="none" stroke="#241205" stroke-width="2"/><path d="M12 10c0-2 2-2 2-4M18 10c0-2 2-2 2-4" stroke="#241205" stroke-width="1.8" fill="none"/></symbol>
+  <symbol id="i-coconut" viewBox="0 0 32 32"><path d="M9 11h14v14a7 7 0 0 1-14 0z" fill="#FFFDF6" stroke="#241205" stroke-width="2"/><rect x="8" y="7" width="16" height="4" rx="1" fill="#C9C9C9" stroke="#241205" stroke-width="2"/><path d="M12 17c3 2 5 2 8 0" stroke="#C9B69C" stroke-width="2" fill="none"/></symbol>
+  <symbol id="i-spice" viewBox="0 0 32 32"><rect x="9" y="11" width="14" height="17" rx="3" fill="#E03A1E" stroke="#241205" stroke-width="2"/><rect x="11" y="5" width="10" height="6" rx="2" fill="#F5B301" stroke="#241205" stroke-width="2"/><path d="M13 16h6M13 20h6" stroke="#FFF1D4" stroke-width="2"/></symbol>
+  <symbol id="i-turmeric" viewBox="0 0 32 32"><rect x="9" y="11" width="14" height="17" rx="3" fill="#F5B301" stroke="#241205" stroke-width="2"/><rect x="11" y="5" width="10" height="6" rx="2" fill="#E03A1E" stroke="#241205" stroke-width="2"/><path d="M13 17h6M13 21h6" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-salt" viewBox="0 0 32 32"><path d="M10 13h12l2 15H8z" fill="#FFFDF6" stroke="#241205" stroke-width="2"/><path d="M11 6h10v7H11z" fill="#0E4A42" stroke="#241205" stroke-width="2"/><circle cx="14" cy="9" r="1" fill="#FFF1D4"/><circle cx="18" cy="9" r="1" fill="#FFF1D4"/></symbol>
+  <symbol id="i-sugar" viewBox="0 0 32 32"><path d="M5 18h22l-3 9H8z" fill="#C97B3C" stroke="#241205" stroke-width="2"/><path d="M7 18c3-6 15-6 18 0" fill="#E09A5B" stroke="#241205" stroke-width="2"/></symbol>
+  <symbol id="i-lettuce" viewBox="0 0 32 32"><path d="M6 18c-2-6 4-11 10-11s12 5 10 11c-2 6-6 10-10 10S8 24 6 18z" fill="#7FC96B" stroke="#241205" stroke-width="2"/><path d="M16 8v20M10 12c2 4 3 9 3 14M22 12c-2 4-3 9-3 14" stroke="#3FA34D" stroke-width="1.8" fill="none"/></symbol>
+  <symbol id="i-tomato" viewBox="0 0 32 32"><circle cx="13" cy="19" r="8" fill="#D92B3A" stroke="#241205" stroke-width="2"/><circle cx="24" cy="14" r="6" fill="#E8503C" stroke="#241205" stroke-width="2"/><path d="M13 11l-3-3M13 11l3-3M24 8l-2-2M24 8l2-2" stroke="#3FA34D" stroke-width="2"/></symbol>
+  <symbol id="i-cucumber" viewBox="0 0 32 32"><rect x="5" y="19" width="22" height="8" rx="4" transform="rotate(-30 16 23)" fill="#5FAE43" stroke="#241205" stroke-width="2"/><path d="M12 20l3 2M16 16l3 2M20 12l3 2" stroke="#9BD46F" stroke-width="2"/></symbol>
+  <symbol id="i-lemon" viewBox="0 0 32 32"><ellipse cx="16" cy="18" rx="11" ry="8" transform="rotate(-20 16 18)" fill="#F5D31E" stroke="#241205" stroke-width="2"/><path d="M25 11l3-3" stroke="#3FA34D" stroke-width="2.5"/></symbol>
+  <symbol id="i-herb" viewBox="0 0 32 32"><path d="M16 28V10" stroke="#3FA34D" stroke-width="2.5"/><path d="M16 14c-5 0-8-3-8-7 5 0 8 3 8 7zM16 20c5 0 8-3 8-7-5 0-8 3-8 7z" fill="#7FC96B" stroke="#241205" stroke-width="1.8"/></symbol>
+  <symbol id="i-grain" viewBox="0 0 32 32"><path d="M4 16h24c0 7-5 11-12 11S4 23 4 16z" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><ellipse cx="12" cy="13" rx="4" ry="2.4" fill="#C9A96B" stroke="#241205" stroke-width="1.5"/><ellipse cx="20" cy="14" rx="4" ry="2.4" fill="#A98550" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-sweetpotato" viewBox="0 0 32 32"><path d="M5 21c2-7 9-12 15-12 5 0 8 3 6 8-2 6-9 11-15 11-4 0-7-3-6-7z" fill="#E0703A" stroke="#241205" stroke-width="2"/><path d="M12 16c3 1 6 3 8 6" stroke="#B9501F" stroke-width="1.8" fill="none"/></symbol>
+  <symbol id="i-broccoli" viewBox="0 0 32 32"><path d="M11 20h10l-2 8h-6z" fill="#9BD46F" stroke="#241205" stroke-width="2"/><path d="M7 15c0-4 3-6 5-6 1-3 7-3 8 0 3 0 5 2 5 6 0 3-3 5-9 5s-9-2-9-5z" fill="#3FA34D" stroke="#241205" stroke-width="2"/></symbol>
+  <symbol id="i-seeds" viewBox="0 0 32 32"><ellipse cx="11" cy="13" rx="3.4" ry="2.2" transform="rotate(-20 11 13)" fill="#FFF1D4" stroke="#241205" stroke-width="1.6"/><ellipse cx="21" cy="16" rx="3.4" ry="2.2" transform="rotate(15 21 16)" fill="#241205"/><ellipse cx="14" cy="21" rx="3.4" ry="2.2" transform="rotate(30 14 21)" fill="#241205"/><ellipse cx="23" cy="24" rx="3.4" ry="2.2" transform="rotate(-10 23 24)" fill="#FFF1D4" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-miso" viewBox="0 0 32 32"><path d="M8 12h16l-2 16H10z" fill="#C98A3C" stroke="#241205" stroke-width="2"/><rect x="6" y="7" width="20" height="5" rx="2" fill="#E8B86D" stroke="#241205" stroke-width="2"/><path d="M12 18h8" stroke="#8C5A20" stroke-width="2"/></symbol>
+  <symbol id="i-tahini" viewBox="0 0 32 32"><path d="M9 13h14v15H9z" fill="#F0E0BC" stroke="#241205" stroke-width="2"/><rect x="11" y="6" width="10" height="7" rx="1.5" fill="#C9B69C" stroke="#241205" stroke-width="2"/><path d="M12 19h8" stroke="#C9A96B" stroke-width="2"/></symbol>
+  <symbol id="i-syrup" viewBox="0 0 32 32"><path d="M11 12h10v16H11z" fill="#B5651D" stroke="#241205" stroke-width="2"/><path d="M13 6h6v6h-6z" fill="#8C4A12" stroke="#241205" stroke-width="2"/><path d="M13 18h6" stroke="#F0C27A" stroke-width="2"/></symbol>
+  <symbol id="i-vinegar" viewBox="0 0 32 32"><path d="M12 13h8v15h-8z" fill="#EBD9A8" stroke="#241205" stroke-width="2"/><path d="M14 5h4v8h-4z" fill="#FFFDF6" stroke="#241205" stroke-width="2"/><path d="M13 20h6" stroke="#C9A96B" stroke-width="2"/></symbol>
+  <symbol id="i-tortilla" viewBox="0 0 32 32"><circle cx="16" cy="17" r="11" fill="#F0DDAE" stroke="#241205" stroke-width="2"/><circle cx="12" cy="14" r="1.4" fill="#C9A96B"/><circle cx="20" cy="15" r="1.4" fill="#C9A96B"/><circle cx="16" cy="21" r="1.4" fill="#C9A96B"/></symbol>
+  <symbol id="i-beans" viewBox="0 0 32 32"><path d="M5 16h22v6c0 4-5 6-11 6S5 26 5 22z" fill="#C9C9C9" stroke="#241205" stroke-width="2"/><ellipse cx="11" cy="13" rx="4" ry="2.6" fill="#3A2440" stroke="#241205" stroke-width="1.5"/><ellipse cx="20" cy="12" rx="4" ry="2.6" fill="#2A1830" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-cheese" viewBox="0 0 32 32"><path d="M4 19l12-9 12 9-12 8z" fill="#F5C63C" stroke="#241205" stroke-width="2"/><path d="M4 19v4l12 8 12-8v-4" fill="#E0AE22" stroke="#241205" stroke-width="2"/><circle cx="13" cy="18" r="1.6" fill="#FFF1D4"/><circle cx="20" cy="20" r="1.4" fill="#FFF1D4"/></symbol>
+  <symbol id="i-spinach" viewBox="0 0 32 32"><path d="M26 6c2 11-5 19-14 19-3 0-6-1-6-1 8-2 10-8 20-18z" fill="#2F8B3F" stroke="#241205" stroke-width="2"/><path d="M6 27c6-8 12-13 18-17" stroke="#9BD46F" stroke-width="2" fill="none"/></symbol>
+  <symbol id="i-sauce" viewBox="0 0 32 32"><path d="M9 11h14v17H9z" fill="#C7361F" stroke="#241205" stroke-width="2"/><ellipse cx="16" cy="11" rx="7" ry="2.6" fill="#E8503C" stroke="#241205" stroke-width="2"/><path d="M12 18h8" stroke="#FFF1D4" stroke-width="2"/></symbol>
+  <symbol id="i-butter" viewBox="0 0 32 32"><path d="M4 20l6-8h18l-6 8z" fill="#FFC93C" stroke="#241205" stroke-width="2"/><path d="M4 20v5h18v-5" fill="#F2B21F" stroke="#241205" stroke-width="2"/><rect x="10" y="14" width="12" height="4" fill="#FFF1D4" stroke="#241205" stroke-width="1.4"/></symbol>
+  <symbol id="i-flour" viewBox="0 0 32 32"><path d="M8 10h16v18H8z" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><path d="M8 10c3-4 13-4 16 0" fill="#FFE7B8" stroke="#241205" stroke-width="2"/><path d="M12 17h8v6h-8z" fill="#FF7A3D" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-oats" viewBox="0 0 32 32"><path d="M4 16h24c0 7-5 11-12 11S4 23 4 16z" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><ellipse cx="12" cy="13" rx="4" ry="2.4" fill="#E0B56B" stroke="#241205" stroke-width="1.5"/><ellipse cx="20" cy="14" rx="4" ry="2.4" fill="#E0B56B" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-milk" viewBox="0 0 32 32"><path d="M10 12h12v16H10z" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><path d="M10 12l6-7 6 7" fill="#FFE7B8" stroke="#241205" stroke-width="2"/><path d="M12 19h8v5h-8z" fill="#E0B56B" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-peach" viewBox="0 0 32 32"><circle cx="16" cy="19" r="10" fill="#FF7A3D" stroke="#241205" stroke-width="2"/><path d="M16 11v8" stroke="#E8256B" stroke-width="2"/><path d="M17 10c2-4 6-4 7-3-1 3-4 4-7 3z" fill="#3FA34D" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-berry" viewBox="0 0 32 32"><circle cx="11" cy="20" r="7" fill="#4534C9" stroke="#241205" stroke-width="2"/><circle cx="22" cy="15" r="6" fill="#6B5BE6" stroke="#241205" stroke-width="2"/></symbol>
+  <symbol id="i-vanilla" viewBox="0 0 32 32"><rect x="11" y="12" width="10" height="16" rx="2" fill="#5B2E12" stroke="#241205" stroke-width="2"/><rect x="13" y="5" width="6" height="7" rx="1.5" fill="#241205"/><path d="M13 18h6" stroke="#F5B301" stroke-width="2"/></symbol>
+  <symbol id="i-leaven" viewBox="0 0 32 32"><rect x="8" y="9" width="16" height="19" rx="2" fill="#3FA34D" stroke="#241205" stroke-width="2"/><rect x="8" y="9" width="16" height="6" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><path d="M12 20h8" stroke="#FFF1D4" stroke-width="2"/></symbol>
+  <symbol id="i-pot" viewBox="0 0 32 32"><rect x="3" y="15" width="26" height="3" rx="1.5" fill="#241205"/><path d="M6 18h20v5c0 4-4 6-10 6S6 27 6 23z" fill="#E03A1E" stroke="#241205" stroke-width="2"/><path d="M12 12c0-2 2-2 2-4M19 12c0-2 2-2 2-4" stroke="#F5B301" stroke-width="2" fill="none"/></symbol>
+</svg>
+
+<div class="wrap" id="app"></div>
+
+<script>
+/* ============================================================
+   1. THEMES — the palette each recipe card is painted in.
+   ============================================================ */
+const THEMES = {
+  spice:    { accent:"#E03A1E", pop:"#F5B301", deep:"#0E4A42", vessel:"#241205", base:"#E8902A", swirl:"#FFFDF6", a:"#F07C1E", b:"#D92B3A", c:"#F5B301", leaf:"#7FC96B" },
+  sesame:   { accent:"#14685C", pop:"#F2B441", deep:"#C1502E", vessel:"#241205", base:"#F3E3C0", swirl:"#E9C47A", a:"#E0703A", b:"#3FA34D", c:"#241205", leaf:"#9BD46F" },
+  chilli:   { accent:"#A61E4D", pop:"#F5B301", deep:"#1F6B4A", vessel:"#241205", base:"#C7361F", swirl:"#F0DDAE", a:"#F5C63C", b:"#3FA34D", c:"#E8503C", leaf:"#7FC96B" },
+  orchard:  { accent:"#E8256B", pop:"#FFC93C", deep:"#4534C9", vessel:"#2A0E2E", base:"#E7A93F", swirl:"#FFFDF6", a:"#FF7A3D", b:"#4534C9", c:"#FFB27A", leaf:"#1F9E6B" }
+};
+
+/* ============================================================
+   2. HERO SCENES — recyclable illustrations, recoloured by theme.
+      pot | bowl | tray | skillet
+   ============================================================ */
+const SCENE = {
+  pot: t => `
+    <ellipse cx="200" cy="252" rx="160" ry="10" fill="rgba(0,0,0,.25)"/>
+    <rect x="18" y="122" width="52" height="20" rx="10" fill="${t.vessel}"/>
+    <rect x="330" y="122" width="52" height="20" rx="10" fill="${t.vessel}"/>
+    <circle cx="200" cy="140" r="122" fill="${t.vessel}"/>
+    <circle cx="200" cy="140" r="104" fill="${t.base}"/>
+    <circle cx="200" cy="140" r="104" fill="none" stroke="${t.vessel}" stroke-width="5"/>
+    <path d="M118 118c30 16 60-10 92 0s58 22 84 2" stroke="rgba(0,0,0,.18)" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M114 168c34-12 58 14 92 6s54 16 84 2" stroke="rgba(0,0,0,.18)" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M140 140c14-26 44-30 64-12s50 10 64-12c6 30-16 56-44 60s-62-10-84-36z" fill="${t.swirl}" opacity=".85" stroke="${t.vessel}" stroke-width="4"/>
+    <g stroke="${t.vessel}" stroke-width="3.5">
+      <circle cx="150" cy="112" r="9" fill="${t.a}"/><circle cx="238" cy="106" r="8" fill="${t.b}"/>
+      <circle cx="166" cy="186" r="9" fill="${t.b}"/><circle cx="244" cy="176" r="8" fill="${t.a}"/>
+      <circle cx="204" cy="204" r="7" fill="${t.c}"/>
+    </g>
+    <g stroke="${t.vessel}" stroke-width="3" fill="${t.leaf}">
+      <path d="M186 92c-10 2-16-4-16-12 9-1 15 4 16 12z"/><path d="M218 150c10-2 16 4 16 12-9 1-15-4-16-12z"/>
+    </g>`,
+  bowl: t => `
+    <ellipse cx="200" cy="252" rx="150" ry="10" fill="rgba(0,0,0,.25)"/>
+    <circle cx="200" cy="140" r="124" fill="${t.vessel}"/>
+    <circle cx="200" cy="140" r="108" fill="${t.base}"/>
+    <circle cx="200" cy="140" r="108" fill="none" stroke="${t.vessel}" stroke-width="5"/>
+    <path d="M200 32a108 108 0 0 1 0 216z" fill="rgba(0,0,0,.05)"/>
+    <g stroke="${t.vessel}" stroke-width="4">
+      <path d="M108 128c8-30 34-46 62-40 10 28-6 56-30 62-14 4-28-6-32-22z" fill="${t.a}"/>
+      <path d="M196 62c30-6 56 12 62 40-6 18-24 26-40 20-22-8-32-34-22-60z" fill="${t.b}"/>
+      <rect x="128" y="168" width="52" height="34" rx="12" fill="${t.a}"/>
+      <rect x="196" y="166" width="58" height="36" rx="14" fill="${t.b}"/>
+      <rect x="164" y="206" width="48" height="28" rx="12" fill="${t.a}"/>
+    </g>
+    <g fill="${t.c}" stroke="${t.vessel}" stroke-width="2">
+      <ellipse cx="150" cy="104" rx="6" ry="4" transform="rotate(-20 150 104)"/>
+      <ellipse cx="238" cy="120" rx="6" ry="4" transform="rotate(15 238 120)"/>
+      <ellipse cx="186" cy="150" rx="6" ry="4" transform="rotate(30 186 150)"/>
+      <ellipse cx="248" cy="186" rx="6" ry="4"/><ellipse cx="128" cy="150" rx="6" ry="4"/>
+    </g>
+    <g stroke="${t.vessel}" stroke-width="3" fill="${t.leaf}">
+      <path d="M212 110c10-2 16 4 16 12-9 1-15-4-16-12z"/>
+    </g>`,
+  tray: t => `
+    <ellipse cx="200" cy="252" rx="165" ry="10" fill="rgba(0,0,0,.25)"/>
+    <rect x="34" y="52" width="332" height="182" rx="26" fill="${t.vessel}"/>
+    <rect x="50" y="68" width="300" height="150" rx="16" fill="${t.base}"/>
+    <g stroke="${t.vessel}" stroke-width="4">
+      <rect x="66" y="82" width="268" height="30" rx="15" fill="${t.swirl}"/>
+      <rect x="66" y="120" width="268" height="30" rx="15" fill="${t.swirl}"/>
+      <rect x="66" y="158" width="268" height="30" rx="15" fill="${t.swirl}"/>
+    </g>
+    <path d="M66 96h268M66 134h268M66 172h268" stroke="rgba(0,0,0,.12)" stroke-width="6"/>
+    <g stroke="${t.vessel}" stroke-width="3">
+      <circle cx="112" cy="96" r="9" fill="${t.a}"/><circle cx="212" cy="134" r="9" fill="${t.a}"/>
+      <circle cx="292" cy="172" r="9" fill="${t.a}"/><circle cx="168" cy="172" r="8" fill="${t.c}"/>
+      <circle cx="264" cy="96" r="8" fill="${t.c}"/>
+    </g>
+    <g stroke="${t.vessel}" stroke-width="3" fill="${t.b}">
+      <path d="M140 126c-10 2-16-4-16-12 9-1 15 4 16 12z"/><path d="M244 158c10-2 16 4 16 12-9 1-15-4-16-12z"/>
+    </g>`,
+  skillet: t => `
+    <ellipse cx="200" cy="252" rx="150" ry="10" fill="rgba(0,0,0,.25)"/>
+    <rect x="330" y="120" width="66" height="22" rx="11" fill="${t.vessel}"/>
+    <circle cx="200" cy="140" r="128" fill="${t.vessel}"/>
+    <circle cx="200" cy="140" r="106" fill="${t.base}"/>
+    <circle cx="200" cy="140" r="106" fill="none" stroke="${t.vessel}" stroke-width="5"/>
+    <g stroke="${t.vessel}" stroke-width="4">
+      <path d="M132 118c26-24 62-24 86-4-24 16-62 18-86 4z" fill="${t.a}"/>
+      <path d="M186 86c28-18 62-12 80 8-26 12-60 10-80-8z" fill="${t.c}"/>
+      <path d="M122 160c28-20 64-18 86 2-26 14-62 14-86-2z" fill="${t.c}"/>
+      <path d="M196 182c28-18 60-12 78 6-26 14-58 12-78-6z" fill="${t.a}"/>
+    </g>
+    <g stroke="${t.vessel}" stroke-width="3.5">
+      <circle cx="152" cy="96" r="11" fill="${t.b}"/><circle cx="262" cy="136" r="10" fill="${t.b}"/>
+      <circle cx="178" cy="148" r="9" fill="${t.b}"/><circle cx="232" cy="200" r="11" fill="${t.b}"/>
+    </g>`
+};
+
+/* ============================================================
+   3. RECIPES — add new dinners (or a new category) here.
+   ============================================================ */
+const RECIPES = [
+{
+  id:"red-lentil-dahl", category:"Dinners", theme:"spice", scene:"pot", icon:"i-lentil",
+  title:"Red Lentil Dahl", title2:"& Crunch Salad",
+  blurb:"Creamy coconut masoor dal with a cold, sharp salad to cut through it.",
+  kicker:"Creamy coconut masoor dal with carrot and capsicum, warm with cumin, turmeric and curry powder. A cold, sharp salad of cos, cherry tomatoes and cucumber cuts straight through it.",
+  tags:["Vegan","30 minutes","One pot + salad"],
+  facts:[["10 min","PREP"],["20 min","COOK"],["1 pot","WASH-UP"]],
+  base:6, step:2, min:2, max:12,
+  servingNote:"Leftovers keep 3–5 days, or freeze before the coconut milk goes in",
+  intro:"Lay everything out first — once the onion is in the pan it moves quickly.",
+  methodIntro:"Dahl simmers while you build the salad. Rice or naan on the side if you want it.",
+  sheetMeta:"Vegan · Prep 10 min · Cook 20 min · One pot",
+  groups:[
+    { name:"The dahl", items:[
+      { icon:"i-lentil", name:"dried red lentils, rinsed", amt:300, unit:"g" },
+      { icon:"i-carrot", name:"carrot, finely diced", amt:200, unit:"g" },
+      { icon:"i-capsicum", name:"red capsicum, finely chopped", amt:120, unit:"g" },
+      { icon:"i-onion", name:"onion, chopped", amt:150, unit:"g" },
+      { icon:"i-garlic", name:"garlic, minced", amt:4, unit:"cloves", round:true },
+      { icon:"i-ginger", name:"fresh ginger, minced", amt:1, unit:"tbsp" },
+      { icon:"i-oil", name:"vegetable oil", amt:2, unit:"tsp" },
+      { icon:"i-broth", name:"vegetable stock or water", amt:720, unit:"ml" },
+      { icon:"i-coconut", name:"canned coconut milk", amt:240, unit:"ml" }]},
+    { name:"Spice tin", items:[
+      { icon:"i-spice", name:"curry powder", amt:1, unit:"tbsp" },
+      { icon:"i-spice", name:"ground cumin", amt:1.5, unit:"tsp" },
+      { icon:"i-turmeric", name:"ground turmeric", amt:1, unit:"tsp" },
+      { icon:"i-turmeric", name:"paprika", amt:1, unit:"tsp" },
+      { icon:"i-spice", name:"chilli flakes", amt:0.3333, unit:"tsp", opt:true },
+      { icon:"i-sugar", name:"brown sugar or maple syrup", amt:1.5, unit:"tsp" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }]},
+    { name:"Crunch salad", items:[
+      { icon:"i-lettuce", name:"baby cos lettuce, leaves torn", amt:200, unit:"g" },
+      { icon:"i-tomato", name:"cherry tomatoes, halved", amt:250, unit:"g" },
+      { icon:"i-cucumber", name:"Lebanese cucumber, sliced", amt:200, unit:"g" },
+      { icon:"i-oil", name:"extra virgin olive oil", amt:2, unit:"tbsp" },
+      { icon:"i-lemon", name:"lemon juice", amt:1, unit:"tbsp" },
+      { icon:"i-herb", name:"coriander or parsley, to finish", amt:0, unit:"", opt:true }]}
+  ],
+  steps:[
+    { h:"Get everything ready", t:"Rinse the <strong>red lentils</strong> under cold water and pick out any stray bits. Chop the <strong>onion</strong>, <strong>carrot</strong> and <strong>capsicum</strong>, and mince the <strong>garlic</strong> and <strong>ginger</strong>." },
+    { h:"Soften the aromatics", t:"Heat the <strong>vegetable oil</strong> in a large pot over medium. Cook the <strong>onion</strong> until soft, then stir in the <strong>ginger</strong>, <strong>garlic</strong>, <strong>carrot</strong> and <strong>capsicum</strong>.", time:"3–4 min" },
+    { h:"Add spices and simmer", t:"Stir in the <strong>curry powder</strong>, <strong>cumin</strong>, <strong>turmeric</strong>, <strong>paprika</strong>, <strong>chilli flakes</strong> and <strong>sugar</strong>, then the <strong>lentils</strong> and <strong>stock</strong>. Bring to the boil, drop to a gentle simmer and cook until the lentils are tender but not collapsed.", time:"10 min" },
+    { h:"Make it creamy", t:"Pour in the <strong>coconut milk</strong> and cook until it thickens to the consistency you like.", time:"5 min" },
+    { h:"Toss the salad", t:"While the dahl finishes, combine the <strong>cos lettuce</strong>, <strong>cherry tomatoes</strong> and <strong>cucumber</strong> in a bowl. Whisk the <strong>olive oil</strong> and <strong>lemon juice</strong> with a pinch of <strong>salt</strong> and pour it over just before serving." },
+    { h:"Season and serve", t:"Taste the dahl and adjust with <strong>salt</strong> and <strong>black pepper</strong>. Serve warm with the salad alongside, scattered with <strong>coriander</strong>, plus rice or naan if you want it." }
+  ],
+  tips:[
+    ["Don't overcook the lentils.","Red split lentils turn to mush fast. Ten minutes at a gentle simmer leaves a bit of texture."],
+    ["Fix the consistency at the end.","Too thick, add a splash of stock or coconut milk. Too loose, simmer uncovered a few more minutes."],
+    ["Tadka, if you have five spare minutes.","Sizzle a teaspoon of cumin seeds, some mustard seeds and sliced garlic in oil for 30–40 seconds, take it off the heat, stir in a pinch of chilli powder and pour it over the dahl."],
+    ["Dress the salad last.","Toss it right before it hits the table or the cucumber weeps and the leaves go limp."],
+    ["Swaps.","Sweet potato or pumpkin instead of carrot; spinach stirred through at the end; a squeeze of lime before serving."]
+  ],
+  sheetNotes:"Don't overcook the lentils — 10 minutes at a gentle simmer. Thin with stock or coconut milk, or simmer uncovered to thicken. Dress the salad at the last minute. Keeps 3–5 days; freeze before adding coconut milk.",
+  source:{ name:"Elavegan", url:"https://elavegan.com/red-lentil-dahl/", note:"Dahl adapted from Michaela Vais; salad added. Roughly 302 kcal and 14 g protein a serve." }
+},
+{
+  id:"miso-sweet-potato-bowl", category:"Dinners", theme:"sesame", scene:"bowl", icon:"i-sweetpotato",
+  title:"Miso Sweet Potato", title2:"& Broccoli Bowl",
+  blurb:"Deeply roasted vegetables over rice, with a miso-tahini dressing worth eating by the spoon.",
+  kicker:"Sweet potato roasted until bronzed, broccoli charred at the edges, piled on rice and coated in a salty-sweet miso, ginger and tahini dressing. The dressing is the whole point — make extra.",
+  tags:["Vegan","Weeknight","One tray"],
+  facts:[["15 min","PREP"],["40 min","ROAST"],["200°C","OVEN"]],
+  base:4, step:2, min:2, max:8,
+  servingNote:"Dressing keeps a week in the fridge — double it and use it on everything",
+  intro:"Roughly 50 g of dry rice per person. Everything else scales with it.",
+  methodIntro:"Rice and dressing happen while the tray is in the oven.",
+  sheetMeta:"Vegan · Prep 15 min · Roast 30–40 min at 200 °C",
+  groups:[
+    { name:"The bowl", items:[
+      { icon:"i-grain", name:"dry rice or other grain", amt:200, unit:"g" },
+      { icon:"i-sweetpotato", name:"sweet potatoes, peeled, 2.5 cm cubes", amt:680, unit:"g" },
+      { icon:"i-broccoli", name:"broccoli, cut into florets", amt:450, unit:"g" },
+      { icon:"i-oil", name:"olive oil, for the tray", amt:2, unit:"tbsp" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" },
+      { icon:"i-seeds", name:"white sesame seeds", amt:1, unit:"tsp" },
+      { icon:"i-seeds", name:"black sesame seeds", amt:1, unit:"tsp" }]},
+    { name:"Miso-sesame dressing", items:[
+      { icon:"i-miso", name:"white miso", amt:2, unit:"tbsp" },
+      { icon:"i-tahini", name:"tahini", amt:2, unit:"tbsp" },
+      { icon:"i-ginger", name:"fresh ginger, minced", amt:1, unit:"tbsp" },
+      { icon:"i-garlic", name:"garlic, minced", amt:1, unit:"cloves", round:true },
+      { icon:"i-syrup", name:"maple syrup or agave", amt:1, unit:"tbsp" },
+      { icon:"i-vinegar", name:"rice vinegar", amt:60, unit:"ml" },
+      { icon:"i-oil", name:"toasted sesame oil", amt:2, unit:"tbsp" },
+      { icon:"i-oil", name:"olive oil", amt:2, unit:"tbsp" }]}
+  ],
+  steps:[
+    { h:"Oven on, rice on", t:"Heat the oven to 200 °C (180 °C fan). Start the <strong>rice</strong> in a rice cooker or pot and cook it according to the packet." },
+    { h:"Prep the vegetables", t:"Peel the <strong>sweet potatoes</strong> and cut into 2.5 cm cubes. Cut the <strong>broccoli</strong> into bite-sized florets; if the stems are woody, peel them and cut into short lengths." },
+    { h:"Roast the sweet potato", t:"Slick one or two large trays with <strong>olive oil</strong>, spread out the sweet potato in a single layer and season with <strong>salt</strong> and <strong>pepper</strong>. Roast until browning underneath.", time:"20 min" },
+    { h:"Add the broccoli", t:"Flip and toss the sweet potato, add the <strong>broccoli</strong> to the tray, season again and roast until the broccoli is lightly charred at the edges and the sweet potato is bronzed and tender.", time:"10–20 min" },
+    { h:"Toast the seeds", t:"In a small dry pan, toast the <strong>white sesame seeds</strong> and <strong>black sesame seeds</strong> until fragrant, then tip them out to cool.", time:"2–3 min" },
+    { h:"Blend the dressing", t:"Put the <strong>miso</strong>, <strong>tahini</strong>, <strong>ginger</strong>, <strong>garlic</strong>, <strong>maple syrup</strong>, <strong>rice vinegar</strong>, <strong>sesame oil</strong> and <strong>olive oil</strong> in a blender and run until smooth, scraping down once. Taste — resist adding more syrup if it reads salty, that's the point." },
+    { h:"Build the bowls", t:"Rice in the bottom, roasted vegetables piled on top, dressing spooned over, <strong>sesame seeds</strong> scattered last. Extra dressing on the side." }
+  ],
+  tips:[
+    ["Don't crowd the tray.","Two trays beat one packed tray — steamed sweet potato is a sad thing. Give everything room."],
+    ["Thin it if it seizes.","Tahini varies wildly in thickness. If the dressing comes out like mayonnaise, blend in water a tablespoon at a time."],
+    ["Swaps.","Butternut pumpkin for the sweet potato; cauliflower for the broccoli; quinoa, farro or brown rice for the grain. Almond or cashew butter works instead of tahini."],
+    ["No peeling needed.","Sweet potato skin is fine to leave on if you'd rather not peel."],
+    ["Good cold.","It packs well for lunch — keep the dressing separate until you eat."]
+  ],
+  sheetNotes:"Don't crowd the tray — two trays beat one packed one. Thin the dressing with water if it's too thick. Dressing keeps a week; it's good on almost anything. Swap in pumpkin, cauliflower, quinoa or farro as you like.",
+  source:{ name:"Smitten Kitchen", url:"https://smittenkitchen.com/2013/10/miso-sweet-potato-and-broccoli-bowl/", note:"Adapted from Deb Perelman, who adapted it in turn. Metric conversions are approximate." }
+},
+{
+  id:"veggie-black-bean-enchiladas", category:"Dinners", theme:"chilli", scene:"tray", icon:"i-tortilla",
+  title:"Veggie Black Bean", title2:"Enchiladas",
+  blurb:"Broccoli, capsicum, spinach and black beans rolled up under red sauce and cheese.",
+  kicker:"Not the quickest dinner, but worth the effort: sautéed capsicum, broccoli and spinach with black beans, rolled into tortillas, drowned in red sauce and baked until golden. Leftovers are lunch.",
+  tags:["Vegetarian","Freezer-friendly","Makes 8"],
+  facts:[["15 min","PREP"],["45 min","COOK"],["200°C","OVEN"]],
+  base:4, step:2, min:2, max:8,
+  servingNote:"Base recipe makes 8 enchiladas in a 33 × 23 cm dish",
+  intro:"Make or open the enchilada sauce first — everything else moves fast once the pan is hot.",
+  methodIntro:"Filling, roll, sauce, bake. Rest before serving or you'll burn your mouth.",
+  sheetMeta:"Vegetarian · Prep 15 min · Bake 20–26 min at 200 °C · 33 × 23 cm dish",
+  groups:[
+    { name:"The filling", items:[
+      { icon:"i-oil", name:"olive oil", amt:2, unit:"tbsp" },
+      { icon:"i-onion", name:"red onion, chopped", amt:150, unit:"g" },
+      { icon:"i-capsicum", name:"red capsicum, chopped", amt:150, unit:"g" },
+      { icon:"i-broccoli", name:"broccoli or cauliflower florets, small", amt:450, unit:"g" },
+      { icon:"i-spinach", name:"baby spinach", amt:150, unit:"g" },
+      { icon:"i-beans", name:"black beans, drained and rinsed", amt:400, unit:"g" },
+      { icon:"i-spice", name:"ground cumin", amt:1, unit:"tsp" },
+      { icon:"i-spice", name:"ground cinnamon", amt:0.25, unit:"tsp" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }]},
+    { name:"To assemble", items:[
+      { icon:"i-sauce", name:"red enchilada sauce", amt:500, unit:"ml" },
+      { icon:"i-tortilla", name:"wholemeal tortillas, 20 cm", amt:8, unit:"tortillas", round:true },
+      { icon:"i-cheese", name:"grated tasty or Monterey Jack", amt:120, unit:"g" },
+      { icon:"i-herb", name:"coriander, chopped, to finish", amt:0, unit:"", opt:true }]}
+  ],
+  steps:[
+    { h:"Heat the oven", t:"Heat the oven to 200 °C (180 °C fan), one rack in the middle and one in the upper third. Grease a 33 × 23 cm baking dish with a little <strong>olive oil</strong>." },
+    { h:"Soften the vegetables", t:"Warm the <strong>olive oil</strong> in a large frying pan over medium. Cook the <strong>red onion</strong> with a pinch of <strong>salt</strong> until soft and translucent, then add the <strong>broccoli</strong> and <strong>capsicum</strong>, drop the heat to medium-low, cover and cook until the broccoli is bright green and just catching gold at the edges.", time:"13–16 min" },
+    { h:"Spices, then greens", t:"Stir in the <strong>cumin</strong> and <strong>cinnamon</strong> until fragrant, about 30 seconds. Add the <strong>baby spinach</strong> a few handfuls at a time, stirring until each lot wilts." },
+    { h:"Mix the filling", t:"Tip everything into a bowl. Stir through the <strong>black beans</strong>, a quarter of the <strong>cheese</strong> and a splash of <strong>enchilada sauce</strong>. Season with <strong>salt</strong> and <strong>black pepper</strong>." },
+    { h:"Roll them up", t:"Pour a little <strong>enchilada sauce</strong> into the dish and tilt to coat the base. Spread about a cup of filling down the middle of a <strong>tortilla</strong>, fold one side over then the other, and set it seam-side down in the dish. Repeat with the rest." },
+    { h:"Sauce and bake", t:"Drizzle the remaining <strong>enchilada sauce</strong> over, leaving the tips bare so they crisp, and scatter over the rest of the <strong>cheese</strong>. Bake uncovered on the middle rack, then move to the upper rack for a few minutes if you want more colour.", time:"20–26 min" },
+    { h:"Rest, then serve", t:"Let them sit — they are volcanically hot straight from the oven. Scatter with <strong>coriander</strong> and serve.", time:"10 min rest" }
+  ],
+  tips:[
+    ["Cinnamon is not a typo.","A quarter teaspoon does something quietly excellent to the filling. Don't skip it, don't double it."],
+    ["Corn tortillas work.","You'll need about 12 rather than 8, and warm them first or they'll crack when you roll."],
+    ["Make it vegan.","Skip the cheese entirely and top with sliced avocado or a drizzle of cashew cream."],
+    ["Freeze before baking.","Assemble, chill until cold, then cover tightly and freeze up to six months. Bake from frozen, covered with foil, about 45 minutes."],
+    ["Extra cheesy.","Double the cheese if that's your idea of a good time — 240 g total."]
+  ],
+  sheetNotes:"Cinnamon is small but essential. Corn tortillas: use about 12 and warm them first. Vegan: skip cheese, top with avocado. Assemble and freeze unbaked for up to 6 months; bake from frozen, covered, about 45 min. Leftovers keep 4 days.",
+  source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/vegetarian-enchiladas-recipe/", note:"Adapted from Kathryne Taylor. Metric conversions are approximate." }
+}
+];
+
+/* ============================================================
+   4. ENGINE — no need to touch anything below when adding recipes.
+   ============================================================ */
+const app = document.getElementById("app");
+const servesState = {};
+const FRAC = [[1,"1"],[0.75,"¾"],[0.6667,"⅔"],[0.5,"½"],[0.3333,"⅓"],[0.25,"¼"],[0.125,"⅛"]];
+
+function fmt(n, unit, round){
+  if (!unit) return "";
+  if (unit === "g" || unit === "ml"){
+    const v = n >= 100 ? Math.round(n/5)*5 : Math.round(n);
+    return v + " " + unit;
+  }
+  if (round){
+    const v = Math.max(1, Math.round(n));
+    return v + " " + (v === 1 ? unit.replace(/s$/,"") : unit);
+  }
+  const whole = Math.floor(n + 1e-9);
+  let rem = n - whole, frac = "", best = null, diff = 1;
+  for (const [v,s] of FRAC){ const d = Math.abs(rem - v); if (d < diff){ diff = d; best = [v,s]; } }
+  if (rem > 0.06 && best && diff < 0.09) frac = best[1];
+  else if (rem > 0.06) return (Math.round(n*100)/100) + " " + unit;
+  const num = (whole ? whole : "") + (frac ? (whole ? " " : "") + frac : (whole ? "" : "0"));
+  return num + " " + unit;
+}
+const themeVars = t => `--accent:${t.accent};--pop:${t.pop};--deep:${t.deep}`;
+
+function renderIndex(){
+  document.body.classList.remove("show-sheet");
+  const cats = [...new Set(RECIPES.map(r => r.category))];
+  app.innerHTML = `
+    <div class="bar">
+      <span class="brand"><svg viewBox="0 0 32 32"><use href="#i-pot"/></svg> The Recipe Box</span>
+    </div>
+    <div class="masthead">
+      <h1>The Recipe<br>Box</h1>
+      <p>Everything worth cooking twice, stripped of the life story and the ads. Tap a card, scale the servings, print an A4 sheet for the fridge.</p>
+    </div>
+    ${cats.map(c => `
+      <p class="cat">${c}</p>
+      <div class="grid">
+        ${RECIPES.filter(r => r.category === c).map(r => {
+          const t = THEMES[r.theme];
+          return `<a class="tile" href="#/${r.id}" style="${themeVars(t)}">
+            <div class="top">
+              <h3>${r.title} ${r.title2 || ""}</h3>
+              <svg class="thumb" viewBox="0 0 400 270" aria-hidden="true">${SCENE[r.scene](t)}</svg>
+            </div>
+            <p class="blurb">${r.blurb}</p>
+            <div class="meta">${r.tags.map(x => `<span class="chip">${x}</span>`).join("")}</div>
+          </a>`;
+        }).join("")}
+      </div>`).join("")}
+  `;
+  window.scrollTo(0,0);
+}
+
+function renderRecipe(r){
+  const t = THEMES[r.theme];
+  if (servesState[r.id] === undefined) servesState[r.id] = r.base;
+  app.innerHTML = `
+    <div class="bar" style="${themeVars(t)}">
+      <a class="brand" href="#/"><svg viewBox="0 0 32 32"><use href="#${r.icon}"/></svg> ← All recipes</a>
+      <button class="btn" id="toSheet">A4 print sheet</button>
+    </div>
+
+    <article class="card" style="${themeVars(t)}">
+      <header class="hero">
+        <div class="tags">${r.tags.map((x,i) => `<span class="tag${i ? " pale" : ""}">${x}</span>`).join("")}</div>
+        <h1>${r.title}${r.title2 ? "<br>" + r.title2 : ""}</h1>
+        <p class="kicker">${r.kicker}</p>
+        <svg class="scene" viewBox="0 0 400 270" role="img" aria-label="Illustration of ${r.title}">${SCENE[r.scene](t)}</svg>
+      </header>
+
+      <div class="facts">
+        ${r.facts.map(f => `<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join("")}
+        <div class="fact"><b id="factServes"></b><span>SERVES</span></div>
+      </div>
+
+      <section class="section">
+        <h2>What's in the box</h2>
+        <p class="sub">${r.intro} Amounts update with the serving count.</p>
+        <div class="servings">
+          <p>Servings<small>${r.servingNote}</small></p>
+          <div class="stepper">
+            <button type="button" id="minus" aria-label="Fewer servings">−</button>
+            <output id="servesOut" aria-live="polite"></output>
+            <button type="button" id="plus" aria-label="More servings">+</button>
+          </div>
+        </div>
+        <div id="ingHost"></div>
+      </section>
+
+      <section class="section">
+        <h2>How to make it</h2>
+        <p class="sub">${r.methodIntro}</p>
+        <ol class="steps">${r.steps.map(s => `
+          <li><div class="step"><h3>${s.h}</h3><p>${s.t}</p>
+          ${s.time ? `<span class="time">⏱ ${s.time}</span>` : ""}</div></li>`).join("")}</ol>
+      </section>
+
+      <section class="section tips">
+        <h2>Good to know</h2>
+        <p class="sub">Small things that make a real difference.</p>
+        <ul>${r.tips.map(x => `<li><b>${x[0]}</b> ${x[1]}</li>`).join("")}</ul>
+      </section>
+
+      <div class="foot">${r.source.note} Original at <a href="${r.source.url}">${r.source.name}</a>.</div>
+    </article>
+
+    <article class="sheet" style="${themeVars(t)}">
+      <div class="sheet-h">
+        <h2>${r.title} ${r.title2 || ""}</h2>
+        <p>${r.sheetMeta} · Serves <span id="sheetServes"></span></p>
+      </div>
+      <div class="sheet-cols">
+        <div><h3>Ingredients</h3><div id="sheetIngHost"></div></div>
+        <div>
+          <h3>Method</h3>
+          <ol class="sheet-steps">${r.steps.map(s => `<li><b>${s.h}${s.time ? " — " + s.time : ""}</b>${s.t}</li>`).join("")}</ol>
+          <h3 style="margin-top:12px">Notes</h3>
+          <p style="font-size:12px;margin:0">${r.sheetNotes}</p>
+        </div>
+      </div>
+      <a class="backlink" id="toCard">← Back to the full card</a>
+    </article>
+  `;
+
+  const paint = () => {
+    const serves = servesState[r.id];
+    const scale = a => a * serves / r.base;
+    document.getElementById("ingHost").innerHTML = r.groups.map(g => `
+      <p class="grouptitle">${g.name}</p>
+      <ul class="ings">${g.items.map(i => `
+        <li class="ing">
+          <span class="pic"><svg aria-hidden="true"><use href="#${i.icon}"/></svg></span>
+          <span class="txt"><span class="amt">${i.amt ? fmt(scale(i.amt), i.unit, i.round) : "to taste"}</span>
+          ${i.name}${i.opt ? ' <span class="opt">(optional)</span>' : ""}</span>
+        </li>`).join("")}</ul>`).join("");
+    document.getElementById("sheetIngHost").innerHTML = r.groups.map(g => `
+      <h3 style="font-size:13px;margin:8px 0 4px">${g.name}</h3>
+      <ul class="sheet-list">${g.items.map(i =>
+        `<li><b>${i.amt ? fmt(scale(i.amt), i.unit, i.round) : ""}</b> ${i.name}${i.opt ? " (optional)" : ""}</li>`).join("")}</ul>`).join("");
+    document.getElementById("servesOut").textContent = serves;
+    document.getElementById("factServes").textContent = serves;
+    document.getElementById("sheetServes").textContent = serves;
+    document.getElementById("minus").disabled = serves <= r.min;
+    document.getElementById("plus").disabled = serves >= r.max;
+  };
+  paint();
+
+  document.getElementById("minus").addEventListener("click", () => { servesState[r.id] = Math.max(r.min, servesState[r.id] - r.step); paint(); });
+  document.getElementById("plus").addEventListener("click", () => { servesState[r.id] = Math.min(r.max, servesState[r.id] + r.step); paint(); });
+  document.getElementById("toSheet").addEventListener("click", () => {
+    document.body.classList.add("show-sheet"); window.scrollTo(0,0);
+    setTimeout(() => window.print(), 250);
+  });
+  document.getElementById("toCard").addEventListener("click", () => {
+    document.body.classList.remove("show-sheet"); window.scrollTo(0,0);
+  });
+  window.scrollTo(0,0);
+}
+
+function route(){
+  const id = (location.hash || "#/").replace(/^#\/?/, "").replace(/\/$/, "");
+  const r = RECIPES.find(x => x.id === id);
+  document.body.classList.remove("show-sheet");
+  if (r) renderRecipe(r); else renderIndex();
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
