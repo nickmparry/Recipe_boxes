@@ -48,27 +48,53 @@ a{color:inherit}
 .btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #F5B301;outline-offset:3px}
 
 /* ---------- index ---------- */
-.masthead{margin:8px 0 26px}
+.masthead{margin:8px 0 22px}
 .masthead h1{
   font-family:"Bricolage Grotesque","Figtree",sans-serif;font-weight:800;letter-spacing:-.03em;
-  font-size:clamp(40px,12vw,72px);line-height:.9;margin:0 0 8px;color:var(--cream);
+  font-size:clamp(36px,10vw,64px);line-height:.9;margin:0 0 8px;color:var(--cream);
 }
-.masthead p{margin:0;color:#C9B0D6;font-size:16px;max-width:44ch}
-.cat{font-family:"Bricolage Grotesque",sans-serif;font-size:14px;letter-spacing:.14em;text-transform:uppercase;
-  color:#C9B0D6;margin:28px 0 12px;display:flex;align-items:center;gap:10px}
+.masthead p{margin:0;color:#C9B0D6;font-size:15px;max-width:52ch}
+
+.home{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+@media(min-width:900px){.home{grid-template-columns:200px 1fr;gap:24px}}
+
+/* ---------- sidebar ---------- */
+.side{border:2px solid rgba(255,241,212,.22);background:rgba(255,241,212,.05);border-radius:16px;padding:6px 12px 12px}
+.side > summary{list-style:none;cursor:pointer;color:var(--cream);font-family:"Bricolage Grotesque",sans-serif;
+  font-weight:800;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;padding:8px 2px}
+.side > summary::-webkit-details-marker{display:none}
+.side > summary::after{content:"▾";float:right}
+.side[open] > summary::after{content:"▴"}
+@media(min-width:900px){
+  .side{position:sticky;top:10px;max-height:calc(100vh - 28px);overflow:auto}
+  .side > summary{display:none}
+  .side:not([open]) > .sidebody{display:block}
+}
+.sidegroup{margin:10px 0 0}
+.sidegroup > summary{list-style:none;cursor:pointer;color:#F5B301;font-family:"Bricolage Grotesque",sans-serif;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:800;padding:5px 2px;
+  border-bottom:1px solid rgba(255,241,212,.18)}
+.sidegroup > summary::-webkit-details-marker{display:none}
+.sidegroup small{opacity:.55;font-weight:600;letter-spacing:0}
+.sidelist{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:1px}
+.sidelist a{display:block;text-decoration:none;color:#E6D6C2;font-size:13px;line-height:1.3;padding:4px 6px;border-radius:8px}
+.sidelist a:hover,.sidelist a:focus-visible{background:rgba(255,241,212,.14);color:var(--cream)}
+
+.cat{font-family:"Bricolage Grotesque",sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:#C9B0D6;margin:24px 0 10px;display:flex;align-items:center;gap:10px;scroll-margin-top:12px}
+.cat:first-of-type{margin-top:0}
 .cat::after{content:"";flex:1;height:2px;background:rgba(255,241,212,.2)}
-.grid{display:grid;gap:14px;grid-template-columns:1fr}
-@media(min-width:620px){.grid{grid-template-columns:1fr 1fr}}
+
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(136px,1fr))}
 .tile{
-  display:block;text-decoration:none;background:var(--paper);border:3px solid var(--ink);
-  border-radius:20px;overflow:hidden;color:var(--ink);
+  display:block;text-decoration:none;background:var(--paper);border:2.5px solid var(--ink);
+  border-radius:14px;overflow:hidden;color:var(--ink);
 }
-.tile .top{background:var(--accent);padding:14px 16px 0;display:flex;gap:12px;align-items:flex-end}
-.tile .top h3{font-family:"Bricolage Grotesque",sans-serif;font-size:22px;line-height:1.05;margin:0 0 12px;color:var(--cream);letter-spacing:-.02em;flex:1}
-.tile .thumb{width:92px;flex:none;margin-bottom:-4px}
-.tile .meta{padding:11px 16px 13px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.chip{background:var(--cream);border:2px solid var(--ink);border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:800}
-.tile .blurb{padding:0 16px 14px;font-size:13.5px;color:var(--muted);margin:0}
+.tile .top{background:var(--accent);padding:6px 8px 0}
+.tile .thumb{display:block;width:100%;margin-bottom:-3px}
+.tile .body{padding:8px 10px 10px}
+.tile h3{font-family:"Bricolage Grotesque",sans-serif;font-size:14.5px;line-height:1.12;margin:0 0 6px;letter-spacing:-.015em}
+.chip{background:var(--cream);border:2px solid var(--ink);border-radius:999px;padding:2px 7px;font-size:10.5px;font-weight:800;white-space:nowrap}
 
 /* ---------- card ---------- */
 .card{background:var(--paper);border-radius:26px;overflow:hidden;border:3px solid var(--ink)}
@@ -156,7 +182,7 @@ body.show-sheet .card{display:none}
   @page{size:A4;margin:12mm}
   body{background:#fff;font-size:10.5pt;padding:0}
   .wrap{padding:0;max-width:none}
-  .bar,.card,.backlink,.btn,.masthead,.grid,.cat{display:none !important}
+  .bar,.card,.backlink,.btn,.masthead,.grid,.cat,.side{display:none !important}
   .sheet{display:block !important;border:0;padding:0;border-radius:0}
   .sheet-cols{grid-template-columns:34% 1fr;gap:10mm}
   .sheet-list,.sheet-steps{font-size:9.5pt}
@@ -210,6 +236,18 @@ body.show-sheet .card{display:none}
   <symbol id="i-berry" viewBox="0 0 32 32"><circle cx="11" cy="20" r="7" fill="#4534C9" stroke="#241205" stroke-width="2"/><circle cx="22" cy="15" r="6" fill="#6B5BE6" stroke="#241205" stroke-width="2"/></symbol>
   <symbol id="i-vanilla" viewBox="0 0 32 32"><rect x="11" y="12" width="10" height="16" rx="2" fill="#5B2E12" stroke="#241205" stroke-width="2"/><rect x="13" y="5" width="6" height="7" rx="1.5" fill="#241205"/><path d="M13 18h6" stroke="#F5B301" stroke-width="2"/></symbol>
   <symbol id="i-leaven" viewBox="0 0 32 32"><rect x="8" y="9" width="16" height="19" rx="2" fill="#3FA34D" stroke="#241205" stroke-width="2"/><rect x="8" y="9" width="16" height="6" fill="#FFF1D4" stroke="#241205" stroke-width="2"/><path d="M12 20h8" stroke="#FFF1D4" stroke-width="2"/></symbol>
+  <symbol id="i-pasta" viewBox="0 0 32 32"><path d="M7 5h4v20a2 2 0 0 1-4 0z" fill="#F0DDAE" stroke="#241205" stroke-width="1.8"/><path d="M14 5h4v20a2 2 0 0 1-4 0z" fill="#E8C98C" stroke="#241205" stroke-width="1.8"/><path d="M21 5h4v20a2 2 0 0 1-4 0z" fill="#F0DDAE" stroke="#241205" stroke-width="1.8"/></symbol>
+  <symbol id="i-mushroom" viewBox="0 0 32 32"><path d="M5 17c0-6 5-10 11-10s11 4 11 10z" fill="#C98A5B" stroke="#241205" stroke-width="2"/><path d="M12 17h8v7a4 4 0 0 1-8 0z" fill="#F0E0BC" stroke="#241205" stroke-width="2"/><circle cx="11" cy="12" r="1.6" fill="#8C5A20"/><circle cx="20" cy="13" r="1.4" fill="#8C5A20"/></symbol>
+  <symbol id="i-zucchini" viewBox="0 0 32 32"><rect x="5" y="19" width="22" height="8" rx="4" transform="rotate(-30 16 23)" fill="#3F8B3A" stroke="#241205" stroke-width="2"/><path d="M12 20l3 2M16 16l3 2M20 12l3 2" stroke="#7FC96B" stroke-width="2"/></symbol>
+  <symbol id="i-eggplant" viewBox="0 0 32 32"><path d="M22 12c4 4 3 12-3 15s-13 1-13-4c0-6 5-8 8-11s6-3 8 0z" fill="#6B3FA0" stroke="#241205" stroke-width="2"/><path d="M22 12l4-4" stroke="#241205" stroke-width="2"/><path d="M20 10c-2-3 0-6 3-6 1 3-1 6-3 6z" fill="#3FA34D" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-banana" viewBox="0 0 32 32"><path d="M7 7c0 11 7 18 16 18 3 0 5-1 5-3-9 0-16-6-17-15z" fill="#F5D31E" stroke="#241205" stroke-width="2"/><path d="M7 7L5 4" stroke="#241205" stroke-width="2.5"/></symbol>
+  <symbol id="i-nuts" viewBox="0 0 32 32"><path d="M11 9c4 0 6 4 6 8s-2 8-6 8-6-4-6-8 2-8 6-8z" fill="#C9A96B" stroke="#241205" stroke-width="1.8"/><path d="M23 13c3 0 5 3 5 6s-2 6-5 6-5-3-5-6 2-6 5-6z" fill="#A98550" stroke="#241205" stroke-width="1.8"/><path d="M11 11v12M23 15v9" stroke="#8C5A20" stroke-width="1.5"/></symbol>
+  <symbol id="i-soy" viewBox="0 0 32 32"><path d="M11 12h10v16H11z" fill="#3A2412" stroke="#241205" stroke-width="2"/><rect x="13" y="5" width="6" height="7" rx="1.5" fill="#C7361F" stroke="#241205" stroke-width="2"/><path d="M13 19h6" stroke="#F0DDAE" stroke-width="2"/></symbol>
+  <symbol id="i-chilli" viewBox="0 0 32 32"><path d="M9 9c9 0 15 6 15 13 0 3-2 6-5 6-2 0-4-2-4-5 0-7-3-12-9-14z" fill="#D92B3A" stroke="#241205" stroke-width="2"/><path d="M9 9c-3-1-4-3-3-6 3 0 5 3 3 6z" fill="#3FA34D" stroke="#241205" stroke-width="1.6"/></symbol>
+  <symbol id="i-potato" viewBox="0 0 32 32"><path d="M7 14c3-6 11-8 16-5s4 12-1 16-13 4-16-1 0-7 1-10z" fill="#D9B06B" stroke="#241205" stroke-width="2"/><ellipse cx="13" cy="14" rx="1.6" ry="1.1" fill="#8C5A20"/><ellipse cx="20" cy="19" rx="1.6" ry="1.1" fill="#8C5A20"/><ellipse cx="14" cy="22" rx="1.4" ry="1" fill="#8C5A20"/></symbol>
+  <symbol id="i-avocado" viewBox="0 0 32 32"><path d="M16 4c6 0 10 6 10 12s-4 12-10 12S6 22 6 16 10 4 16 4z" fill="#3F8B3A" stroke="#241205" stroke-width="2"/><path d="M16 8c4 0 6 4 6 8s-2 8-6 8-6-4-6-8 2-8 6-8z" fill="#D8E86B" stroke="#241205" stroke-width="1.5"/><circle cx="16" cy="17" r="4" fill="#8C5A20" stroke="#241205" stroke-width="1.5"/></symbol>
+  <symbol id="i-egg" viewBox="0 0 32 32"><path d="M16 4c6 0 10 8 10 14a10 10 0 0 1-20 0C6 12 10 4 16 4z" fill="#FFFDF6" stroke="#241205" stroke-width="2"/><circle cx="16" cy="18" r="5" fill="#F5B301" stroke="#241205" stroke-width="1.8"/></symbol>
+  <symbol id="i-pea" viewBox="0 0 32 32"><path d="M5 14c6-6 16-6 22 0-6 8-16 8-22 0z" fill="#7FC96B" stroke="#241205" stroke-width="2"/><circle cx="11" cy="20" r="4" fill="#3FA34D" stroke="#241205" stroke-width="1.8"/><circle cx="21" cy="21" r="4" fill="#3FA34D" stroke="#241205" stroke-width="1.8"/></symbol>
   <symbol id="i-pot" viewBox="0 0 32 32"><rect x="3" y="15" width="26" height="3" rx="1.5" fill="#241205"/><path d="M6 18h20v5c0 4-4 6-10 6S6 27 6 23z" fill="#E03A1E" stroke="#241205" stroke-width="2"/><path d="M12 12c0-2 2-2 2-4M19 12c0-2 2-2 2-4" stroke="#F5B301" stroke-width="2" fill="none"/></symbol>
 </svg>
 
@@ -223,7 +261,8 @@ const THEMES = {
   spice:    { accent:"#E03A1E", pop:"#F5B301", deep:"#0E4A42", vessel:"#241205", base:"#E8902A", swirl:"#FFFDF6", a:"#F07C1E", b:"#D92B3A", c:"#F5B301", leaf:"#7FC96B" },
   sesame:   { accent:"#14685C", pop:"#F2B441", deep:"#C1502E", vessel:"#241205", base:"#F3E3C0", swirl:"#E9C47A", a:"#E0703A", b:"#3FA34D", c:"#241205", leaf:"#9BD46F" },
   chilli:   { accent:"#A61E4D", pop:"#F5B301", deep:"#1F6B4A", vessel:"#241205", base:"#C7361F", swirl:"#F0DDAE", a:"#F5C63C", b:"#3FA34D", c:"#E8503C", leaf:"#7FC96B" },
-  orchard:  { accent:"#E8256B", pop:"#FFC93C", deep:"#4534C9", vessel:"#2A0E2E", base:"#E7A93F", swirl:"#FFFDF6", a:"#FF7A3D", b:"#4534C9", c:"#FFB27A", leaf:"#1F9E6B" }
+  orchard:  { accent:"#E8256B", pop:"#FFC93C", deep:"#4534C9", vessel:"#2A0E2E", base:"#E7A93F", swirl:"#FFFDF6", a:"#FF7A3D", b:"#4534C9", c:"#FFB27A", leaf:"#1F9E6B" },
+  herb:     { accent:"#2F6B3A", pop:"#F0C93C", deep:"#7A3B1F", vessel:"#241205", base:"#E8D9AE", swirl:"#FFFDF6", a:"#7FC96B", b:"#C97B3C", c:"#F0C93C", leaf:"#9BD46F" }
 };
 
 /* ============================================================
@@ -466,6 +505,515 @@ const RECIPES = [
   sheetNotes:"Cinnamon is small but essential. Corn tortillas: use about 12 and warm them first. Vegan: skip cheese, top with avocado. Assemble and freeze unbaked for up to 6 months; bake from frozen, covered, about 45 min. Leftovers keep 4 days.",
   source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/vegetarian-enchiladas-recipe/", note:"Adapted from Kathryne Taylor. Metric conversions are approximate." }
 }
+,
+{
+  id:"chunky-vegetable-spaghetti", category:"Dinners", theme:"chilli", scene:"skillet", icon:"i-pasta",
+  title:"Chunky Vegetable", title2:"Spaghetti",
+  blurb:"A jar of pasta sauce doing heavy lifting behind a pan of properly cooked vegetables.",
+  kicker:"Zucchini, carrot, mushroom and roasted capsicum cooked until crisp-tender, then loosened with pasta sauce and fresh tomato. The vegetables stay in pieces you can see. Twenty-five minutes, start to plate.",
+  tags:["Vegetarian","25 minutes","Weeknight"],
+  facts:[["10 min","PREP"],["15 min","COOK"],["1 pan + pot","WASH-UP"]],
+  base:6, step:2, min:2, max:12,
+  servingNote:"Makes about 1.3 L of sauce. Keeps 3 days.",
+  intro:"Cut the vegetables to roughly the same size so they finish together.",
+  methodIntro:"The pasta and the sauce run in parallel. Start the water first.",
+  sheetMeta:"Vegetarian · Prep 10 min · Cook 15 min · 1 pan + pot",
+  groups:[
+    { name:"The pasta", items:[
+      { icon:"i-pasta", name:"spaghetti", amt:450, unit:"g" },
+      { icon:"i-salt", name:"salt for the water", amt:0, unit:"" }
+    ]},
+    { name:"The vegetables", items:[
+      { icon:"i-oil", name:"olive oil", amt:40, unit:"ml" },
+      { icon:"i-zucchini", name:"zucchini, in 1 cm slices", amt:400, unit:"g" },
+      { icon:"i-carrot", name:"carrot, thinly sliced", amt:200, unit:"g" },
+      { icon:"i-mushroom", name:"mushrooms, sliced", amt:90, unit:"g" },
+      { icon:"i-onion", name:"brown onion, diced", amt:150, unit:"g" },
+      { icon:"i-garlic", name:"garlic, finely chopped", amt:2, unit:"cloves", round:true }
+    ]},
+    { name:"The sauce", items:[
+      { icon:"i-tomato", name:"tomatoes, seeded and cut in chunks", amt:300, unit:"g" },
+      { icon:"i-capsicum", name:"roasted red capsicum, drained and chopped", amt:200, unit:"g" },
+      { icon:"i-sauce", name:"tomato pasta sauce", amt:500, unit:"g" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" },
+      { icon:"i-herb", name:"basil, chopped", amt:15, unit:"g" },
+      { icon:"i-cheese", name:"parmesan, grated, to finish", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Water on", t:"Get a big pot of well-salted water boiling and cook the <strong>spaghetti</strong> to the packet time. Drain, keeping a mugful of the water.", time:"10 min" },
+    { h:"Start the pan", t:"Heat the <strong>olive oil</strong> in a large frying pan over medium-high. It wants to be hot before anything goes in.", time:"2 min" },
+    { h:"Fry the hard vegetables", t:"Add the <strong>zucchini</strong>, <strong>carrot</strong>, <strong>mushrooms</strong>, <strong>onion</strong> and <strong>garlic</strong>. Stir often and cook until crisp-tender — still some bite, a bit of colour.", time:"5–7 min" },
+    { h:"In with the sauce", t:"Stir through the <strong>tomatoes</strong>, <strong>roasted capsicum</strong> and <strong>pasta sauce</strong>. Season with <strong>salt</strong> and <strong>pepper</strong> and heat through.", time:"3–5 min" },
+    { h:"Basil last", t:"Off the heat, stir in the <strong>basil</strong>. Cooking it flattens it." },
+    { h:"Serve", t:"Spoon the sauce over the <strong>spaghetti</strong>, loosening with pasta water if it needs it. <strong>Parmesan</strong> on top if you want it." }
+  ],
+  tips:[
+    ["Crisp-tender means crisp-tender.","If the zucchini goes soft in the pan it will be mush by the time it hits the plate. Pull it early."],
+    ["Jarred roasted capsicum is the point.","It brings sweetness and smoke you cannot get in 25 minutes any other way. Don't substitute raw."],
+    ["Make it vegan.","Skip the parmesan, or use a nut-based one. Nothing else in the dish needs changing."],
+    ["Dried basil works.","Use 1 tablespoon, and add it with the sauce rather than at the end so it has time to soften."],
+    ["Sauce freezes, pasta doesn't.","Freeze the sauce in portions up to three months. Cook fresh spaghetti each time."]
+  ],
+  sheetNotes:"Pull the vegetables while they still have bite. Jarred roasted capsicum does the heavy lifting — don't swap it for raw. Vegan: skip the parmesan. Dried basil: 1 tbsp, added with the sauce. Sauce freezes 3 months.",
+  source:{ name:"Betty Crocker", url:"https://www.bettycrocker.com/recipes/chunky-vegetable-spaghetti/d3244b0d-edda-498e-8d66-d2a777594bc3", note:"Adapted from Betty Crocker. Metric conversions are approximate." }
+},
+{
+  id:"spicy-kale-coconut-fried-rice", category:"Dinners", theme:"sesame", scene:"skillet", icon:"i-grain",
+  title:"Spicy Kale &", title2:"Coconut Fried Rice",
+  blurb:"Cold rice, toasted coconut flakes and a lot of kale, hot and fast in one pan.",
+  kicker:"The coconut flakes toast in the pan and go nutty, which is the whole trick. Kale, spring onion, chilli garlic sauce and a hard squeeze of lime. Fifteen minutes once the rice is cold.",
+  tags:["Vegan","35 minutes","One pan"],
+  facts:[["20 min","PREP"],["15 min","COOK"],["1 pan","WASH-UP"]],
+  base:2, step:1, min:1, max:6,
+  servingNote:"Rice must be cooked ahead and properly cold. Leftovers keep 2 days.",
+  intro:"Have everything cut and within reach — the cooking is over in minutes.",
+  methodIntro:"High heat throughout. Work in stages and park each one in a bowl.",
+  sheetMeta:"Vegan · Prep 20 min · Cook 15 min · One pan",
+  groups:[
+    { name:"The pan", items:[
+      { icon:"i-coconut", name:"coconut oil", amt:30, unit:"ml" },
+      { icon:"i-garlic", name:"garlic, minced", amt:2, unit:"cloves", round:true },
+      { icon:"i-herb", name:"spring onions, chopped", amt:75, unit:"g" },
+      { icon:"i-capsicum", name:"capsicum or carrot, chopped", amt:120, unit:"g" },
+      { icon:"i-spinach", name:"kale, ribs out, leaves chopped", amt:150, unit:"g" },
+      { icon:"i-salt", name:"fine salt", amt:0.25, unit:"tsp" }
+    ]},
+    { name:"The rice", items:[
+      { icon:"i-coconut", name:"large unsweetened coconut flakes", amt:45, unit:"g" },
+      { icon:"i-grain", name:"cooked brown rice, cold", amt:350, unit:"g" },
+      { icon:"i-beans", name:"edamame, defrosted", amt:150, unit:"g" }
+    ]},
+    { name:"To finish", items:[
+      { icon:"i-soy", name:"tamari or soy sauce", amt:10, unit:"ml" },
+      { icon:"i-chilli", name:"chilli garlic sauce or sriracha", amt:10, unit:"ml" },
+      { icon:"i-lemon", name:"lime, halved", amt:1, unit:"", round:true },
+      { icon:"i-herb", name:"coriander, to finish", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Get the pan hot", t:"A wok or wide frying pan over medium-high. Add two thirds of the <strong>coconut oil</strong>.", time:"2 min" },
+    { h:"Aromatics", t:"Stir-fry the <strong>garlic</strong>, <strong>spring onions</strong> and <strong>capsicum</strong> until fragrant.", time:"1 min" },
+    { h:"Wilt the kale", t:"Add the <strong>kale</strong> and the <strong>salt</strong>. Cook until wilted and tender, then tip the lot into a bowl.", time:"1–2 min" },
+    { h:"Toast the coconut", t:"Add the rest of the <strong>coconut oil</strong> and the <strong>coconut flakes</strong>. They go from pale to golden in seconds — don't walk away.", time:"30 sec" },
+    { h:"Fry the rice", t:"Add the cold <strong>brown rice</strong> and cook, stirring now and then, until heated through and starting to crisp in places.", time:"3 min" },
+    { h:"Bring it back together", t:"Return the kale mixture to the pan with the <strong>edamame</strong> and stir until everything is hot.", time:"2 min" },
+    { h:"Season off the heat", t:"Pull the pan off and add the <strong>tamari</strong>, the <strong>chilli garlic sauce</strong> and the juice of half the <strong>lime</strong>. Taste and push it further if it's flat." },
+    { h:"Serve", t:"Into bowls, with the remaining <strong>lime</strong> in wedges and <strong>coriander</strong> over the top." }
+  ],
+  tips:[
+    ["Cold rice or nothing.","Warm rice steams and clumps. Cook it the day before, or spread it on a tray and chill it fast."],
+    ["Flakes, not shredded coconut.","Shredded coconut burns before it toasts. You want the big flat flakes."],
+    ["It's better the next day.","Reheats well and is fine cold, which makes it a good lunch."],
+    ["Not vegan by default.","The original uses two scrambled eggs. Edamame replaces them here — add them in the last stage if you'd rather."],
+    ["Heat is adjustable.","The chilli garlic sauce is the only source of it. Start at two teaspoons and add more at the table."]
+  ],
+  sheetNotes:"The rice must be cold — cook it a day ahead. Use large coconut flakes, not shredded, and watch them; they toast in seconds. Season off the heat. Keeps 2 days and reheats well.",
+  source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/2014/spicy-kale-and-coconut-stir-fry/", note:"Adapted from Kathryne Taylor, after Laura Russell. Made vegan. Metric conversions are approximate." }
+},
+{
+  id:"thai-red-curry-vegetables", category:"Dinners", theme:"spice", scene:"pot", icon:"i-coconut",
+  title:"Thai Red Curry", title2:"with Vegetables",
+  blurb:"Curry paste bloomed properly, plenty of aromatics, a tin of coconut milk. Forty minutes.",
+  kicker:"Onion, ginger and garlic do most of the work here — the paste is only half the flavour. Capsicum and carrot keep some bite, kale wilts in at the end, and it's finished with tamari and vinegar rather than more salt.",
+  tags:["Vegan","40 minutes","One pan"],
+  facts:[["10 min","PREP"],["30 min","COOK"],["1 pan + pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Rice cooks alongside. Curry keeps 4 days.",
+  intro:"About 400 g of vegetables total — swap freely as long as the weight holds.",
+  methodIntro:"Rice on first, then build the curry in a deep frying pan.",
+  sheetMeta:"Vegan · Prep 10 min · Cook 30 min · Pan + pot",
+  groups:[
+    { name:"The rice", items:[
+      { icon:"i-grain", name:"brown jasmine rice, rinsed", amt:250, unit:"g" },
+      { icon:"i-salt", name:"salt", amt:0, unit:"" }
+    ]},
+    { name:"The aromatics", items:[
+      { icon:"i-coconut", name:"coconut oil", amt:15, unit:"ml" },
+      { icon:"i-onion", name:"white onion, chopped", amt:150, unit:"g" },
+      { icon:"i-ginger", name:"ginger, finely grated", amt:15, unit:"g" },
+      { icon:"i-garlic", name:"garlic, minced", amt:2, unit:"cloves", round:true },
+      { icon:"i-spice", name:"Thai red curry paste", amt:35, unit:"g" }
+    ]},
+    { name:"The curry", items:[
+      { icon:"i-capsicum", name:"red capsicum, in thin strips", amt:180, unit:"g" },
+      { icon:"i-capsicum", name:"yellow or green capsicum, in thin strips", amt:180, unit:"g" },
+      { icon:"i-carrot", name:"carrot, sliced on the diagonal", amt:250, unit:"g" },
+      { icon:"i-coconut", name:"coconut milk, full fat", amt:400, unit:"ml" },
+      { icon:"i-broth", name:"water", amt:125, unit:"ml" },
+      { icon:"i-spinach", name:"kale, ribs out, thinly sliced", amt:70, unit:"g" },
+      { icon:"i-sugar", name:"coconut or brown sugar", amt:1.5, unit:"tsp" },
+      { icon:"i-soy", name:"tamari or soy sauce", amt:15, unit:"ml" },
+      { icon:"i-vinegar", name:"rice vinegar or lime juice", amt:10, unit:"ml" },
+      { icon:"i-herb", name:"coriander or Thai basil, to finish", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Rice on", t:"Boil the <strong>rice</strong> in plenty of water like pasta, then drain, return to the pot and leave it covered to steam. Salt and fluff before serving.", time:"30 min + 10 rest" },
+    { h:"Soften the onion", t:"Warm the <strong>coconut oil</strong> in a deep frying pan over medium heat. Cook the <strong>onion</strong> with a pinch of <strong>salt</strong> until soft and translucent.", time:"5 min" },
+    { h:"Ginger and garlic", t:"Add the <strong>ginger</strong> and <strong>garlic</strong> and stir constantly until fragrant. They burn quickly.", time:"30 sec" },
+    { h:"The hard vegetables", t:"Add the <strong>capsicums</strong> and <strong>carrot</strong> and cook until the capsicum is just fork-tender.", time:"3–5 min" },
+    { h:"Bloom the paste", t:"Stir in the <strong>curry paste</strong> and cook it in the oil. This is the step people skip and it is the one that matters.", time:"2 min" },
+    { h:"Simmer", t:"Pour in the <strong>coconut milk</strong> and <strong>water</strong>, add the <strong>kale</strong> and <strong>sugar</strong>, and bring to a gentle simmer. Cook until the vegetables are how you want them.", time:"5–10 min" },
+    { h:"Season off the heat", t:"Add the <strong>tamari</strong> and <strong>rice vinegar</strong>. Taste. If it's flat it usually wants salt, not more paste." },
+    { h:"Serve", t:"Curry over <strong>rice</strong>, <strong>coriander</strong> on top." }
+  ],
+  tips:[
+    ["Check the paste is vegan.","Most supermarket red curry pastes contain shrimp paste or fish sauce. Read the tin."],
+    ["Full-fat coconut milk.","Light coconut milk makes a thin, sad curry. Not worth it."],
+    ["Swap the vegetables freely.","Broccoli, cauliflower, mushroom, pumpkin, sweet potato or zucchini all work — keep the total around 400 g."],
+    ["Adding tofu.","Bake it first, then stir it in with the coconut milk so it keeps some texture."],
+    ["Boil the rice like pasta.","Big pot, lots of water, drain and steam. Far more forgiving than the absorption method."]
+  ],
+  sheetNotes:"Check the curry paste for shrimp paste or fish sauce. Full-fat coconut milk only. Bloom the paste in the oil for two minutes — don't skip it. Swap vegetables freely, keeping about 400 g total. Keeps 4 days.",
+  source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/2015/thai-red-curry-recipe/", note:"Adapted from Kathryne Taylor. Metric conversions are approximate." }
+},
+{
+  id:"roasted-eggplant-tomato-orzo", category:"Dinners", theme:"chilli", scene:"tray", icon:"i-eggplant",
+  title:"Roasted Eggplant", title2:"& Tomato Orzo",
+  blurb:"Eggplant roasted until it collapses, tossed through orzo with lemon and garlic.",
+  kicker:"The eggplant goes in the oven long enough to turn golden and soft, the tomatoes blister alongside it. Everything lands on hot orzo with a sharp lemon-garlic dressing, herbs and toasted pine nuts. Good hot, better at room temperature.",
+  tags:["Vegetarian","35 minutes","Oven"],
+  facts:[["10 min","PREP"],["25 min","COOK"],["2 trays + pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4 as a meal, 6 as a side. Keeps 3 days.",
+  intro:"Cube the eggplant evenly or half of it burns while the rest is raw.",
+  methodIntro:"Oven at 200°C. The orzo goes on while the trays are roasting.",
+  sheetMeta:"Vegetarian · Prep 10 min · Cook 25 min · Oven 200°C",
+  groups:[
+    { name:"The trays", items:[
+      { icon:"i-eggplant", name:"eggplant, in 2 cm cubes", amt:450, unit:"g" },
+      { icon:"i-oil", name:"olive oil, for the eggplant", amt:30, unit:"ml" },
+      { icon:"i-tomato", name:"cherry tomatoes, halved", amt:200, unit:"g" },
+      { icon:"i-oil", name:"olive oil, for the tomatoes", amt:5, unit:"ml" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }
+    ]},
+    { name:"The pasta", items:[
+      { icon:"i-pasta", name:"wholemeal orzo (risoni)", amt:225, unit:"g" },
+      { icon:"i-cheese", name:"feta, crumbled", amt:50, unit:"g", opt:true },
+      { icon:"i-herb", name:"basil, chopped", amt:10, unit:"g" },
+      { icon:"i-herb", name:"parsley, chopped", amt:10, unit:"g" },
+      { icon:"i-nuts", name:"pine nuts, toasted", amt:20, unit:"g" }
+    ]},
+    { name:"Lemon-garlic dressing", items:[
+      { icon:"i-oil", name:"olive oil", amt:30, unit:"ml" },
+      { icon:"i-lemon", name:"lemon juice", amt:20, unit:"ml" },
+      { icon:"i-garlic", name:"garlic, minced", amt:2, unit:"cloves", round:true },
+      { icon:"i-salt", name:"salt", amt:0.25, unit:"tsp" },
+      { icon:"i-chilli", name:"chilli flakes", amt:0.125, unit:"tsp" }
+    ]}
+  ],
+  steps:[
+    { h:"Oven on", t:"200°C, racks in the middle and upper third. Line two trays.", time:"10 min" },
+    { h:"Eggplant in", t:"Toss the <strong>eggplant</strong> with the <strong>olive oil</strong>, <strong>salt</strong> and <strong>pepper</strong> and spread it in one layer on the big tray. Roast on the middle rack, stirring halfway, until golden and soft.", time:"25 min" },
+    { h:"Tomatoes in", t:"Toss the <strong>cherry tomatoes</strong> with the remaining <strong>olive oil</strong>, <strong>salt</strong> and <strong>pepper</strong> on the smaller tray and roast on the upper rack until wrinkled.", time:"12 min" },
+    { h:"Orzo on", t:"Cook the <strong>orzo</strong> in well-salted boiling water until al dente. Save a cup of the water, drain, and tip it into a big serving bowl.", time:"9 min" },
+    { h:"Dressing", t:"Whisk the <strong>olive oil</strong>, <strong>lemon juice</strong>, <strong>garlic</strong>, <strong>salt</strong> and <strong>chilli flakes</strong> together and pour it over the hot orzo. Toss." },
+    { h:"Bring it together", t:"Add the roasted <strong>eggplant</strong> and <strong>tomatoes</strong>, the <strong>feta</strong>, <strong>basil</strong>, <strong>parsley</strong> and <strong>pine nuts</strong>. Toss gently, loosening with pasta water if it looks dry." },
+    { h:"Taste and serve", t:"More <strong>salt</strong>, more <strong>lemon</strong>, more <strong>olive oil</strong> — it will usually want one of them. Serve straight away or at room temperature." }
+  ],
+  tips:[
+    ["Don't crowd the eggplant tray.","Piled up it steams and goes grey. One layer, two trays if you have to."],
+    ["Make it vegan.","Leave out the feta and add a handful of sliced kalamata olives for the salt."],
+    ["Toast the pine nuts dry.","Small pan, no oil, medium heat, constant attention. They go from nothing to burnt in about twenty seconds."],
+    ["Orzo is sold as risoni here.","Same thing. Wholemeal if you can find it, regular is fine."],
+    ["Better at room temperature.","Works as a picnic or lunchbox dish. Add the herbs fresh if it's been in the fridge."]
+  ],
+  sheetNotes:"One layer on the eggplant tray or it steams. Toast the pine nuts dry and watch them. Vegan: skip the feta, add kalamata olives. Orzo is sold as risoni. Good hot or at room temperature; keeps 3 days.",
+  source:{ name:"Cookie and Kate", url:"https://cookieandkate.com/2015/roasted-eggplant-tomato-orzo-pasta-recipe/", note:"Adapted from Kathryne Taylor. Metric conversions are approximate." }
+},
+{
+  id:"vegan-banana-crumb-muffins", category:"Breakfast", theme:"orchard", scene:"tray", icon:"i-banana",
+  title:"Vegan Banana", title2:"Crumb Muffins",
+  blurb:"Four black bananas, a flax egg and a sandy brown-sugar crumb on top.",
+  kicker:"Wholemeal and oats in the batter, so they're substantial rather than cakey. The crumb is the reason to make them — raw sugar, flour and cold vegan butter rubbed to wet sand. Thirty minutes from bowl to cooling rack.",
+  tags:["Vegan","30 minutes","One bowl"],
+  facts:[["10 min","PREP"],["20 min","BAKE"],["1 bowl + tin","WASH-UP"]],
+  base:10, step:2, min:6, max:24,
+  servingNote:"Makes 10–11 standard muffins. Keeps 3–4 days, or a month frozen.",
+  intro:"The bananas want to be properly black-spotted. Underripe ones make bland muffins.",
+  methodIntro:"Oven at 190°C. Everything happens in one bowl except the crumb.",
+  sheetMeta:"Vegan · Prep 10 min · Bake 20 min · Makes 10–11",
+  groups:[
+    { name:"The batter", items:[
+      { icon:"i-seeds", name:"flaxseed meal", amt:14, unit:"g" },
+      { icon:"i-broth", name:"water", amt:75, unit:"ml" },
+      { icon:"i-banana", name:"very ripe bananas, peeled", amt:450, unit:"g" },
+      { icon:"i-sugar", name:"brown sugar, packed", amt:120, unit:"g" },
+      { icon:"i-butter", name:"vegan butter, melted", amt:55, unit:"g" },
+      { icon:"i-vanilla", name:"vanilla extract", amt:5, unit:"ml" },
+      { icon:"i-leaven", name:"bicarb soda", amt:2, unit:"tsp" },
+      { icon:"i-salt", name:"sea salt", amt:0.5, unit:"tsp" },
+      { icon:"i-flour", name:"wholemeal plain flour", amt:180, unit:"g" },
+      { icon:"i-oats", name:"rolled oats", amt:45, unit:"g" },
+      { icon:"i-nuts", name:"walnuts, chopped", amt:30, unit:"g", opt:true }
+    ]},
+    { name:"The crumb", items:[
+      { icon:"i-sugar", name:"raw sugar", amt:55, unit:"g" },
+      { icon:"i-flour", name:"plain flour", amt:40, unit:"g" },
+      { icon:"i-butter", name:"vegan butter, cold", amt:28, unit:"g" }
+    ]}
+  ],
+  steps:[
+    { h:"Oven and tin", t:"190°C. Grease a standard 12-hole muffin tin or line it.", time:"10 min" },
+    { h:"Flax egg", t:"Stir the <strong>flaxseed meal</strong> into the <strong>water</strong> in a large bowl and leave it to thicken.", time:"5 min" },
+    { h:"Mash the bananas", t:"Add the <strong>bananas</strong> and mash them in, leaving some lumps. Completely smooth makes a denser muffin." },
+    { h:"Whisk the wet", t:"Add the <strong>brown sugar</strong>, <strong>bicarb soda</strong> and <strong>salt</strong> and whisk hard for a minute, then stir in the <strong>vanilla</strong> and the melted <strong>vegan butter</strong>.", time:"1 min" },
+    { h:"Fold in the dry", t:"Add the <strong>wholemeal flour</strong> and <strong>oats</strong> and stir only until it comes together. Fold through the <strong>walnuts</strong>. Overmixing makes them tough." },
+    { h:"Fill and crumb", t:"Divide between 10–11 holes, three-quarters full. Rub the <strong>raw sugar</strong>, <strong>plain flour</strong> and cold <strong>vegan butter</strong> together with a fork until it looks like wet sand, then pile it on generously." },
+    { h:"Bake", t:"Until golden and a skewer comes out clean.", time:"17–22 min" },
+    { h:"Cool briefly", t:"A few minutes in the tin, then out onto a rack. Best still warm." }
+  ],
+  tips:[
+    ["Black bananas only.","Yellow ones have not converted enough starch to sugar. If yours aren't there, bake them at 180°C for 15 minutes and cool."],
+    ["Don't fill all twelve holes.","Ten or eleven gives muffins with a proper domed top. Twelve gives you flat ones."],
+    ["Cold butter for the crumb.","Softened butter makes paste, not crumb. Take it out of the fridge two minutes before."],
+    ["Wholemeal pastry flour if you can get it.","Regular wholemeal works but is heavier. A 50/50 mix with plain flour splits the difference."],
+    ["Freeze them.","A month in the freezer. Straight into a low oven from frozen, not the microwave."]
+  ],
+  sheetNotes:"Bananas must be black-spotted. Fill only 10–11 holes for a domed top. Keep the crumb butter cold and rub it to wet sand. Don't overmix the batter. Keeps 3–4 days, or a month frozen.",
+  source:{ name:"Minimalist Baker", url:"https://minimalistbaker.com/vegan-banana-crumb-muffins/", note:"Adapted from Dana Shultz. Metric conversions are approximate." }
+}
+,
+{
+  id:"veggie-carbonara", category:"Dinners", theme:"herb", scene:"skillet", icon:"i-pasta",
+  title:"Veggie Carbonara",
+  blurb:"Carbonara without the bacon — egg, ricotta, lemon, peas and spinach, off the heat.",
+  kicker:"The sauce is egg and ricotta loosened with pasta water, sharpened with lemon zest. Peas go in with the last three minutes of pasta, spinach wilts in the pan. Thirty minutes and one pot.",
+  tags:["Vegetarian","30 minutes","One pot"],
+  facts:[["5 min","PREP"],["25 min","COOK"],["1 pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4 adults or 6 kids. Eat it straight away — it doesn't keep.",
+  intro:"Have the egg mixture beaten and ready before the pasta is drained.",
+  methodIntro:"The heat of the pasta cooks the egg. The pan stays off the burner.",
+  sheetMeta:"Vegetarian · Prep 5 min · Cook 25 min · One pot",
+  groups:[
+    { name:"The pasta", items:[
+      { icon:"i-pasta", name:"dried linguine", amt:400, unit:"g" },
+      { icon:"i-pea", name:"peas, fresh or frozen", amt:100, unit:"g" },
+      { icon:"i-spinach", name:"baby spinach", amt:100, unit:"g" },
+      { icon:"i-salt", name:"salt for the water", amt:0, unit:"" }
+    ]},
+    { name:"The sauce", items:[
+      { icon:"i-egg", name:"large free-range eggs", amt:4, unit:"eggs", round:true },
+      { icon:"i-cheese", name:"soft ricotta", amt:50, unit:"g" },
+      { icon:"i-lemon", name:"lemon, zested", amt:1, unit:"", round:true },
+      { icon:"i-salt", name:"black pepper", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Pasta on", t:"Cook the <strong>linguine</strong> in well-salted boiling water to the packet time.", time:"10 min" },
+    { h:"Beat the sauce", t:"Crack the <strong>eggs</strong> into a bowl and beat with a fork. Season with plenty of <strong>black pepper</strong>, stir in the <strong>ricotta</strong> and grate in most of the <strong>lemon</strong> zest." },
+    { h:"Peas in late", t:"With three minutes left, tip the <strong>peas</strong> into the pasta water.", time:"3 min" },
+    { h:"Drain, keep the water", t:"Save a mug of the cooking water, drain the <strong>linguine</strong> and <strong>peas</strong>, and return them to the hot pan — off the heat." },
+    { h:"Stir it through", t:"Add the egg mixture and the <strong>baby spinach</strong> and stir with a wooden spoon. The residual heat sets the sauce and wilts the leaves. Loosen with pasta water until it's glossy." },
+    { h:"Serve straight away", t:"Into bowls, more <strong>pepper</strong> and the rest of the <strong>lemon</strong> zest over the top." }
+  ],
+  tips:[
+    ["Off the heat means off the heat.","Back on the burner and you have scrambled egg pasta. The pan holds more than enough heat."],
+    ["Keep more pasta water than you think.","The sauce tightens as it sits. A splash brings it straight back."],
+    ["Make it vegan.","This one doesn't convert well — the egg is the sauce. Use the garlic chilli pasta instead if you need vegan."],
+    ["Zest before you juice.","You only need the zest here, but zest the whole lemon and keep the rest for something else."],
+    ["Frozen peas are fine.","Straight from the freezer into the pasta water. No need to thaw."]
+  ],
+  sheetNotes:"Pan off the heat before the egg goes in or it scrambles. Keep a mug of pasta water to loosen the sauce. Peas go in for the last three minutes. Eat immediately; it doesn't reheat.",
+  source:{ name:"Jamie Oliver", url:"https://www.jamieoliver.com/recipes/pasta-recipes/veggie-carbonara/", note:"Adapted from Jamie Oliver." }
+},
+{
+  id:"curried-kale-potato-lentil-soup", category:"Dinners", theme:"spice", scene:"pot", icon:"i-lentil",
+  title:"Curried Kale, Potato", title2:"& Lentil Soup",
+  blurb:"One pot, green lentils, two kinds of potato and enough curry powder to notice.",
+  kicker:"Onion, ginger and carrot go in first, then the potatoes get a few minutes of colour before the curry powder. Lentils simmer until they start to fall apart and thicken it. Kale in at the very end so it stays green.",
+  tags:["Vegan","45 minutes","One pot"],
+  facts:[["10 min","PREP"],["35 min","COOK"],["1 pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4 as a meal, 6 as a starter. Keeps 5 days, freezes a month.",
+  intro:"Half sweet potato, half waxy potato gives you both sweetness and structure.",
+  methodIntro:"Everything happens in one big pot, in order.",
+  sheetMeta:"Vegan · Prep 10 min · Cook 35 min · One pot",
+  groups:[
+    { name:"The base", items:[
+      { icon:"i-coconut", name:"coconut oil", amt:15, unit:"ml" },
+      { icon:"i-onion", name:"brown onion, diced", amt:150, unit:"g" },
+      { icon:"i-ginger", name:"ginger, minced", amt:5, unit:"g" },
+      { icon:"i-carrot", name:"carrot, peeled and chopped", amt:200, unit:"g" },
+      { icon:"i-garlic", name:"garlic, minced", amt:4, unit:"cloves", round:true },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }
+    ]},
+    { name:"The soup", items:[
+      { icon:"i-potato", name:"potato and sweet potato, diced", amt:450, unit:"g" },
+      { icon:"i-spice", name:"curry powder", amt:12, unit:"g" },
+      { icon:"i-broth", name:"vegetable stock", amt:1400, unit:"ml" },
+      { icon:"i-lentil", name:"green lentils, rinsed", amt:200, unit:"g" },
+      { icon:"i-sugar", name:"coconut sugar", amt:12, unit:"g", opt:true },
+      { icon:"i-spinach", name:"kale, chopped", amt:120, unit:"g" }
+    ]},
+    { name:"To serve", items:[
+      { icon:"i-herb", name:"coriander, chopped", amt:0, unit:"", opt:true },
+      { icon:"i-lemon", name:"lemon, for squeezing", amt:0, unit:"", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Soften the base", t:"Heat the <strong>coconut oil</strong> in a large pot over medium. Add the <strong>onion</strong>, <strong>ginger</strong> and <strong>carrot</strong> with <strong>salt</strong> and <strong>pepper</strong> and cook, stirring often, until the onion softens.", time:"3–5 min" },
+    { h:"Colour the potatoes", t:"Add the <strong>garlic</strong> and <strong>potatoes</strong> and cook until they take a little colour.", time:"3–4 min" },
+    { h:"Toast the curry powder", t:"Stir in the <strong>curry powder</strong> to coat everything and cook it out.", time:"2 min" },
+    { h:"Stock and lentils", t:"Pour in most of the <strong>stock</strong>, bring to a low boil, add the <strong>lentils</strong>, then drop to a simmer.", time:"2 min" },
+    { h:"Simmer uncovered", t:"Until the <strong>lentils</strong> and <strong>potatoes</strong> are tender and the soup has thickened.", time:"20–25 min" },
+    { h:"Taste and adjust", t:"More <strong>salt</strong>, more <strong>curry powder</strong>, or the <strong>coconut sugar</strong> if it needs rounding. Loosen with the reserved <strong>stock</strong> if it's too thick." },
+    { h:"Kale last", t:"Stir in the <strong>kale</strong>, cover, and steam until tender and still bright.", time:"2–3 min" },
+    { h:"Serve", t:"<strong>Coriander</strong> on top and a squeeze of <strong>lemon</strong>. Bread on the side." }
+  ],
+  tips:[
+    ["Green lentils, not red.","Red lentils dissolve completely and you lose the texture. Green or brown hold just enough shape."],
+    ["Hold back a cup of stock.","Lentils keep drinking as the soup sits. You'll want it to thin it out on day two."],
+    ["Kale at the end, always.","Three minutes. Any longer and it goes olive-coloured and sulphurous."],
+    ["Not a curry fan?","Leave out the curry powder and use a teaspoon or two of fresh thyme instead. Completely different soup, also good."],
+    ["Freezes well.","A month in the freezer. Thaw overnight and add a splash of stock when reheating."]
+  ],
+  sheetNotes:"Green or brown lentils only — red ones dissolve. Hold back a cup of stock; it thickens as it sits. Kale goes in for the last 2–3 minutes. Keeps 5 days, freezes a month.",
+  source:{ name:"Minimalist Baker", url:"https://minimalistbaker.com/curried-potato-lentil-soup-1-pot/", note:"Adapted from Dana Shultz. Metric conversions are approximate." }
+},
+{
+  id:"portobello-steaks-avocado-chimichurri", category:"Dinners", theme:"herb", scene:"skillet", icon:"i-mushroom",
+  title:"Portobello Steaks", title2:"& Avocado Chimichurri",
+  blurb:"Marinated portobellos hit hard in a pan, under a pile of parsley and avocado.",
+  kicker:"Balsamic, cumin and smoked paprika go into the mushrooms for ten minutes, which is all they need. The chimichurri is mostly parsley, sharp with lemon, and the avocado folded through it makes it a sauce rather than a dressing.",
+  tags:["Vegan","25 minutes","One pan"],
+  facts:[["15 min","PREP"],["10 min","COOK"],["1 pan","WASH-UP"]],
+  base:3, step:1, min:1, max:6,
+  servingNote:"One mushroom each. Best eaten immediately — avocado browns.",
+  intro:"Wipe the mushrooms clean rather than washing them. They soak up water.",
+  methodIntro:"Marinate, make the chimichurri while they sit, then cook fast.",
+  sheetMeta:"Vegan · Prep 15 min · Cook 10 min · One pan",
+  groups:[
+    { name:"The mushrooms", items:[
+      { icon:"i-mushroom", name:"large portobello mushrooms, stems out", amt:3, unit:"mushrooms", round:true },
+      { icon:"i-vinegar", name:"balsamic vinegar", amt:45, unit:"ml" },
+      { icon:"i-oil", name:"olive oil", amt:30, unit:"ml" },
+      { icon:"i-spice", name:"ground cumin", amt:0.5, unit:"tsp" },
+      { icon:"i-spice", name:"smoked paprika", amt:0.25, unit:"tsp" },
+      { icon:"i-salt", name:"black pepper", amt:0.5, unit:"tsp" },
+      { icon:"i-garlic", name:"garlic, minced", amt:3, unit:"cloves", round:true },
+      { icon:"i-sauce", name:"vegan steak sauce or HP", amt:15, unit:"ml", opt:true }
+    ]},
+    { name:"Avocado chimichurri", items:[
+      { icon:"i-herb", name:"flat-leaf parsley, finely chopped", amt:45, unit:"g" },
+      { icon:"i-garlic", name:"garlic, minced", amt:2, unit:"cloves", round:true },
+      { icon:"i-onion", name:"shallot, finely chopped", amt:40, unit:"g" },
+      { icon:"i-chilli", name:"chilli flakes", amt:0.25, unit:"tsp" },
+      { icon:"i-oil", name:"extra virgin olive oil", amt:30, unit:"ml" },
+      { icon:"i-lemon", name:"lemon juice", amt:40, unit:"ml" },
+      { icon:"i-salt", name:"sea salt and black pepper", amt:0, unit:"" },
+      { icon:"i-avocado", name:"small ripe avocado, cubed", amt:150, unit:"g" }
+    ]}
+  ],
+  steps:[
+    { h:"Mix the marinade", t:"Whisk the <strong>balsamic vinegar</strong>, <strong>olive oil</strong>, <strong>cumin</strong>, <strong>smoked paprika</strong>, <strong>black pepper</strong>, <strong>garlic</strong> and the <strong>steak sauce</strong> if you're using it. Taste it — it should be sharp." },
+    { h:"Marinate", t:"Lay the <strong>portobello mushrooms</strong> in a shallow dish and brush the marinade over both sides. Five minutes a side is enough; they're sponges.", time:"10 min" },
+    { h:"Build the chimichurri", t:"Combine the <strong>parsley</strong>, <strong>garlic</strong>, <strong>shallot</strong>, <strong>chilli flakes</strong>, <strong>olive oil</strong>, <strong>lemon juice</strong>, <strong>salt</strong> and <strong>pepper</strong> in a bowl and whisk." },
+    { h:"Taste and push it", t:"It should be aggressive — more <strong>lemon juice</strong> for sharpness, more <strong>salt</strong> for depth, more <strong>chilli flakes</strong> for heat. It's going on a mild mushroom." },
+    { h:"Fold in the avocado", t:"Add the <strong>avocado</strong> and fold gently so the cubes stay whole." },
+    { h:"Cook them hard", t:"Grill or fry over medium heat until caramelised and deep brown, brushing with the leftover marinade as they go.", time:"2–3 min a side" },
+    { h:"Serve", t:"Mushrooms on plates, <strong>chimichurri</strong> piled on top." }
+  ],
+  tips:[
+    ["Don't over-marinate.","Ten minutes total. Longer and they go slack and release water in the pan instead of browning."],
+    ["The pan must be hot.","Medium-low gives you grey, weeping mushrooms. You want a hard sear."],
+    ["Gill side up first.","Cook the gill side second so the juices that collect in the cup don't run out into the pan."],
+    ["What to serve with it.","Mashed potatoes, quinoa or rice. There's a vegan mash in the sides."],
+    ["Make the chimichurri ahead.","Everything but the avocado holds a day in the fridge. Fold the avocado in just before serving."]
+  ],
+  sheetNotes:"Marinate 10 minutes only. Hot pan, hard sear, 2–3 minutes a side. Season the chimichurri aggressively — it's carrying a mild mushroom. Fold the avocado in last. Eat immediately.",
+  source:{ name:"Minimalist Baker", url:"https://minimalistbaker.com/portobello-steaks-avocado-chimichurri/", note:"Adapted from Dana Shultz. Metric conversions are approximate." }
+},
+{
+  id:"perfect-roast-potatoes", category:"Other", theme:"herb", scene:"tray", icon:"i-potato",
+  title:"Perfect Roast", title2:"Potatoes",
+  blurb:"Parboiled, fluffed, squashed flat and roasted twice with rosemary and whole garlic.",
+  kicker:"The squashing is the whole thing — you flatten each potato after the first roast to triple the surface area, then send them back in with herbs and garlic. Splash of vinegar at the end cuts the fat. Not quick, but not difficult.",
+  tags:["Vegan","1 hr 40","Side"],
+  facts:[["15 min","PREP"],["85 min","ROAST"],["1 tray + pot","WASH-UP"]],
+  base:6, step:2, min:2, max:12,
+  servingNote:"Serves 6 as a side. Best straight from the oven.",
+  intro:"A floury potato — Sebago, Dutch Cream or Coliban. Waxy ones will not fluff.",
+  methodIntro:"Oven at 190°C. Two roasts with a squashing in between.",
+  sheetMeta:"Vegan · Prep 15 min · Roast 85 min · Oven 190°C",
+  groups:[
+    { name:"The potatoes", items:[
+      { icon:"i-potato", name:"floury potatoes, peeled", amt:1500, unit:"g" },
+      { icon:"i-salt", name:"salt for the water", amt:0, unit:"" }
+    ]},
+    { name:"The roast", items:[
+      { icon:"i-oil", name:"olive oil", amt:45, unit:"ml" },
+      { icon:"i-herb", name:"rosemary, leaves picked", amt:20, unit:"g" },
+      { icon:"i-garlic", name:"garlic, whole unpeeled cloves", amt:1, unit:"bulb", round:true },
+      { icon:"i-vinegar", name:"red wine vinegar", amt:15, unit:"ml" },
+      { icon:"i-salt", name:"salt and black pepper", amt:0, unit:"" }
+    ]}
+  ],
+  steps:[
+    { h:"Oven and prep", t:"190°C. Peel the <strong>potatoes</strong> and cut the big ones so they're all about the same size — roughly a golf ball and a half.", time:"15 min" },
+    { h:"Parboil", t:"Rinse them, then into a pot of cold salted water. Bring to the boil and cook, then drain and leave to steam dry in the colander.", time:"7 min + 3 dry" },
+    { h:"Fluff them", t:"Shake the colander hard. The roughed-up surface is what goes crisp." },
+    { h:"First roast", t:"Tip the <strong>potatoes</strong> into a roasting tray, add most of the <strong>olive oil</strong>, season with <strong>salt</strong> and <strong>pepper</strong> and toss. Roast until lightly golden and about three-quarters done.", time:"30 min" },
+    { h:"Squash", t:"Press down on each potato with a masher until it cracks open. More surface, more crust." },
+    { h:"Mix the flavouring", t:"Stir the remaining <strong>olive oil</strong> with the <strong>rosemary</strong>, the unpeeled <strong>garlic</strong> cloves and the <strong>red wine vinegar</strong>." },
+    { h:"Second roast", t:"Spoon it over, shake the tray, and back into the oven until crisp and bubbling.", time:"40–45 min" },
+    { h:"Drain and serve", t:"Onto paper towel for a moment, then straight to the table. Squeeze the soft <strong>garlic</strong> out of its skins over the top." }
+  ],
+  tips:[
+    ["Maris Piper isn't sold here.","Sebago (the standard brushed potato), Dutch Cream or Coliban all work. Avoid anything labelled waxy or salad."],
+    ["Steam dry is not optional.","Wet potatoes steam in the tray instead of frying. Three minutes in the colander, minimum."],
+    ["Don't crowd the tray.","They need space around them. Two trays is better than one crowded one."],
+    ["Other fats.","The original offers butter with sage and clementine, or goose fat with thyme and bay. Neither is vegan; olive oil and rosemary is."],
+    ["The vinegar matters.","A tablespoon at the second roast stops the whole thing tasting greasy. You won't taste it as vinegar."]
+  ],
+  sheetNotes:"Floury potatoes only — Sebago, Dutch Cream or Coliban. Parboil 7 min, steam dry 3, shake hard to fluff. Roast 30 min, squash each one flat, then 40–45 min more with oil, rosemary, whole garlic and a splash of red wine vinegar. Don't crowd the tray.",
+  source:{ name:"Jamie Oliver", url:"https://www.jamieoliver.com/recipes/vegetables-recipes/perfect-roast-potatoes/", note:"Adapted from Jamie Oliver, using the olive oil and rosemary version." }
+},
+{
+  id:"vegan-mashed-potatoes", category:"Other", theme:"sesame", scene:"bowl", icon:"i-potato",
+  title:"Vegan Mashed", title2:"Potatoes",
+  blurb:"Potatoes, vegan butter, a lot of garlic. Nothing else, and nothing missing.",
+  kicker:"Roasted garlic is what makes this worth the trouble — sweet and mellow rather than sharp. Vegan butter does the rest. No milk, no cream, and it's still properly rich.",
+  tags:["Vegan","40 minutes","One pot"],
+  facts:[["10 min","PREP"],["30 min","COOK"],["1 pot","WASH-UP"]],
+  base:4, step:1, min:2, max:8,
+  servingNote:"Serves 4 as a side. Keeps a few days. Does not freeze.",
+  intro:"Peel them for a smoother mash, or leave the skins on for texture.",
+  methodIntro:"If you want roasted garlic, start it an hour ahead — see the tips.",
+  sheetMeta:"Vegan · Prep 10 min · Cook 30 min · One pot",
+  groups:[
+    { name:"The potatoes", items:[
+      { icon:"i-potato", name:"waxy yellow potatoes, halved", amt:1000, unit:"g" },
+      { icon:"i-salt", name:"sea salt for the water", amt:1, unit:"tsp" }
+    ]},
+    { name:"The mash", items:[
+      { icon:"i-butter", name:"vegan butter, softened", amt:55, unit:"g" },
+      { icon:"i-garlic", name:"garlic, roasted or sautéed", amt:6, unit:"cloves", round:true },
+      { icon:"i-salt", name:"sea salt", amt:0.5, unit:"tsp" },
+      { icon:"i-salt", name:"black pepper", amt:0.5, unit:"tsp" },
+      { icon:"i-herb", name:"chives, chopped, to finish", amt:10, unit:"g", opt:true }
+    ]}
+  ],
+  steps:[
+    { h:"Potatoes in cold water", t:"Halve the <strong>potatoes</strong> and put them in a large pot, covered by about 3 cm of cold water." },
+    { h:"Boil", t:"Bring to a light boil, add the <strong>salt</strong>, and cook until a knife goes in with no resistance at all. Undercooked potato makes lumpy mash and nothing fixes it.", time:"25–30 min" },
+    { h:"Dry them out", t:"Drain, then return the <strong>potatoes</strong> to the hot empty pot off the heat for a minute so the surface water steams off.", time:"1 min" },
+    { h:"Mash", t:"Work them over with a masher until fluffy. A stick blender makes glue — don't." },
+    { h:"Butter and garlic", t:"Add the <strong>vegan butter</strong>, the <strong>garlic</strong>, the <strong>salt</strong> and the <strong>black pepper</strong> and stir it through. Taste and push the salt further than feels right." },
+    { h:"Serve", t:"<strong>Chives</strong> on top. Gravy if you have it." }
+  ],
+  tips:[
+    ["Roast the garlic.","Cut the top off a bulb, oil it, wrap in foil, 200°C for an hour. It's a different ingredient to raw garlic — sweet, not sharp."],
+    ["Or sauté it.","No hour to spare: mince the cloves and cook them in olive oil for three minutes first. Raw garlic straight into mash is harsh."],
+    ["Masher, never a blender.","Potato starch turns to wallpaper paste the moment it meets a blade."],
+    ["Salt harder than you think.","Potato absorbs an enormous amount. Season, taste, season again."],
+    ["Doesn't freeze.","A few days covered in the fridge. Reheat with a splash of plant milk and more butter."]
+  ],
+  sheetNotes:"Cook until a knife meets no resistance. Drain and dry in the hot pot for a minute. Masher only — a blender makes glue. Roast the garlic (200°C, 1 hr) or sauté it first; never raw. Salt hard. Doesn't freeze.",
+  source:{ name:"Minimalist Baker", url:"https://minimalistbaker.com/the-best-damn-vegan-mashed-potatoes/", note:"Adapted from Dana Shultz. Metric conversions are approximate." }
+}
 ];
 
 /* ============================================================
@@ -495,32 +1043,51 @@ function fmt(n, unit, round){
 }
 const themeVars = t => `--accent:${t.accent};--pop:${t.pop};--deep:${t.deep}`;
 
+const CAT_ORDER = ["Dinners","Desserts","Breakfast","Other"];
+const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g,"-");
+const fullTitle = r => r.title + (r.title2 ? " " + r.title2 : "");
+function catsInOrder(){
+  return [...new Set(RECIPES.map(r => r.category))].sort((a,b) => {
+    const ia = CAT_ORDER.indexOf(a), ib = CAT_ORDER.indexOf(b);
+    return (ia < 0 ? 90 : ia) - (ib < 0 ? 90 : ib) || a.localeCompare(b);
+  });
+}
+const inCat = c => RECIPES.filter(r => r.category === c)
+  .sort((a,b) => fullTitle(a).localeCompare(fullTitle(b)));
+
 function renderIndex(){
   document.body.classList.remove("show-sheet");
-  const cats = [...new Set(RECIPES.map(r => r.category))];
+  const cats = catsInOrder();
   app.innerHTML = `
     <div class="bar">
       <span class="brand"><svg viewBox="0 0 32 32"><use href="#i-pot"/></svg> The Recipe Box</span>
+      <span class="brand" style="opacity:.55;font-weight:600">${RECIPES.length} recipes</span>
     </div>
     <div class="masthead">
       <h1>The Recipe<br>Box</h1>
-      <p>Everything worth cooking twice, stripped of the life story and the ads. Tap a card, scale the servings, print an A4 sheet for the fridge.</p>
+      <p>Everything worth cooking twice, stripped of the life story and the ads. Tap a tile, scale the servings, print an A4 sheet for the fridge.</p>
     </div>
-    ${cats.map(c => `
-      <p class="cat">${c}</p>
-      <div class="grid">
-        ${RECIPES.filter(r => r.category === c).map(r => {
+    <div class="home">
+      <details class="side">
+        <summary>Find a recipe</summary>
+        <div class="sidebody">${cats.map(c => {
+          const list = inCat(c);
+          return `<details class="sidegroup" open>
+            <summary>${c} <small>${list.length}</small></summary>
+            <ul class="sidelist">${list.map(r => `<li><a href="#/${r.id}">${fullTitle(r)}</a></li>`).join("")}</ul>
+          </details>`;
+        }).join("")}</div>
+      </details>
+      <div>${cats.map(c => `
+        <p class="cat" id="cat-${slugify(c)}">${c}</p>
+        <div class="grid">${inCat(c).map(r => {
           const t = THEMES[r.theme];
-          return `<a class="tile" href="#/${r.id}" style="${themeVars(t)}">
-            <div class="top">
-              <h3>${r.title} ${r.title2 || ""}</h3>
-              <svg class="thumb" viewBox="0 0 400 270" aria-hidden="true">${SCENE[r.scene](t)}</svg>
-            </div>
-            <p class="blurb">${r.blurb}</p>
-            <div class="meta">${r.tags.map(x => `<span class="chip">${x}</span>`).join("")}</div>
+          return `<a class="tile" href="#/${r.id}" title="${r.blurb.replace(/"/g,"&quot;")}" style="${themeVars(t)}">
+            <div class="top"><svg class="thumb" viewBox="0 0 400 258" aria-hidden="true">${SCENE[r.scene](t)}</svg></div>
+            <div class="body"><h3>${fullTitle(r)}</h3><span class="chip">${r.tags[1] || r.tags[0]}</span></div>
           </a>`;
-        }).join("")}
-      </div>`).join("")}
+        }).join("")}</div>`).join("")}</div>
+    </div>
   `;
   window.scrollTo(0,0);
 }
